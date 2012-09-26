@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block panel %}
+              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="#about">Acerca de</a></li>
+              <li><a href="#contact">Contáctanos</a></li>
+              
+              <!--
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li> -->
+{% endblock %}
+{% block principal %}
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Bienvenido a Voluntariado</h1>
+        <p>Muy pronto podrás utilizar esta aplicación, la cual proveerá facilidades para que puedas encontrar el lugar ideal para poder ayudar a las Organizaciones que más te necesitan, haznos saber si te encuentras interesado, regístrate</p>
+        
+			   <form class="navbar-form pull-left" action='.' method = 'POST'> {% csrf_token %}
+					{% for i in form.fields %}
+              <input class="span2" type="text" name="{{i}}" placeholder="{{ i }}" />
+					{% endfor %}
+				   
+              <button class="btn btn-primary btn-large" type="submit" class="btn">Suscribir</button>
+            </form>        
+        
+        <!-- <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p> -->
+      </div>
+{% endblock %}
