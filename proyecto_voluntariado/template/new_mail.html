@@ -1,8 +1,8 @@
 {% extends 'index.html' %}
 {% block panel %}
               <li class="active"><a href="#">Inicio</a></li>
-              <li><a href="#about">Acerca de</a></li>
-              <li><a href="#contact">Contáctanos</a></li>
+              <li><a href="about/">Acerca de</a></li>
+              <li><a href="contact/">Contáctanos</a></li>
               
               <!--
               <li class="dropdown">
@@ -22,16 +22,42 @@
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
         <h1>Bienvenido a Voluntariado</h1>
-        <p>Muy pronto podrás utilizar esta aplicación, la cual proveerá facilidades para que puedas encontrar el lugar ideal para poder ayudar a las Organizaciones que más te necesitan, haznos saber si te encuentras interesado, regístrate</p>
+        <p>Muy pronto podrás utilizar esta aplicación, en la que encontrarás la forma ideal para poder ayudar a las Organizaciones que más te necesitan, haznos saber si te encuentras interesado, regístrate</p>
+      <div class="hero-unit">
+      	{% if errors %}        
+        <div class="alert alert-error">
+        	<button type="button" class="close" data-dismiss="alert">x</button>
+        	<strong>Error</strong>
+        	  {{ errors }}
+        </div>
+        {% endif %}
         
+        {% if success %}        
+        <div class="alert alert-success">
+        	<button type="button" class="close" data-dismiss="alert">x</button>
+        	<strong>¡Gracias!</strong>
+        	  <p>Ahora te encuentras registrado, espera noticias sobre nuestra aplicación.</p>
+        </div>
+        {% endif %}
 			   <form class="navbar-form pull-left" action='.' method = 'POST'> {% csrf_token %}
-					{% for i in form.fields %}
-              <input class="span2" type="text" name="{{i}}" placeholder="{{ i }}" />
+					{% for i in form %}
+						{{ i }}
 					{% endfor %}
-				   
+
+	
+					<!--					
+					{% for i in form.fields %}
+              <input class="span3" type="text" name="{{i}}" placeholder="{{ i }}" />
+					{% endfor %}
+				   -->
               <button class="btn btn-primary btn-large" type="submit" class="btn">Suscribir</button>
             </form>        
+      </div>
+        <!--<style type="text/css"> ul { color: red } </style> -->
+			
         
         <!-- <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p> -->
       </div>
+      
+      
 {% endblock %}
