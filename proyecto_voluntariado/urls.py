@@ -15,7 +15,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     #url(r'^$', include('voluntariado.urls')),
+    url(r'^$', 'frontpage.views.contact'),
+    url(r'^about/$', 'voluntariado.views.about'),
+    url(r'^contact/$','voluntariado.views.contact_us'),
     url(r'^', include('voluntariado.urls')),
-    url(r'^mails/$', include('frontpage.urls')),
     
 )
