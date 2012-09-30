@@ -36,3 +36,9 @@ def ingreso_voluntario(request):
     else:
         form = FormularioVoluntario()
     return render_to_response('ingreso_organizaciones.html', {'form': form}, context_instance=RequestContext(request))
+
+def about(request):
+	return render_to_response('about.html',{}, context_instance=RequestContext(request))
+	
+def contact_us(request):
+	return render_to_response('contact.html',{}, context_instance=RequestContext(request))

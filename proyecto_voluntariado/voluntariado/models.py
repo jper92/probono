@@ -1,10 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-
+class Intereses(models.Model):
+	nombre = models.CharField(max_length=60)
+	es_favorito = models.BooleanField()
+	descripcion = models.CharField(max_length=60)
+	
+	def __unicode__(self):
+		s = self.nombre + " , " + self.descripcion
+		return s
 
 class Voluntario(models.Model):
 	
-	correo = models.CharField(max_length=50, primary_key=True)
+	correo = models.EmailField(primary_key=True)
 	nombres = models.CharField(max_length=50)
 	apellidos = models.CharField(max_length=50)
 	nacimiento = models.DateField()
@@ -13,6 +21,9 @@ class Voluntario(models.Model):
 	direccion = models.CharField(max_length=70, null=True)
 	escolaridad = models.CharField(max_length=1)
 	titulo = models.CharField(max_length=60, null = True)
+	user = models.OneToOneField(User)
+	especialidades = models.ManyToManyField(Intereses, related_name="especialidades")
+	favoritos = models.ManyToManyField(Intereses, related_name="favoritos")
 	#foto, cv
 	
 class Organizacion(models.Model):
@@ -29,13 +40,12 @@ class Organizacion(models.Model):
 	linkedin = models.CharField(max_length=30, null=True)
 	es_empresa = models.BooleanField()
 	expira = models.DateField()
+	user = models.OneToOneField(User)
+	intereses = models.ManyToManyField(Intereses)
 	#logo
 	
-class Intereses(models.Model):
-	nombre = models.CharField(max_length=60)
-	es_favorito = models.BooleanField()
-	descripcion = models.CharField(max_length=60)
-	
+
+"""	
 class InteresesVoluntarios(models.Model):
 	voluntario = models.ForeignKey(Voluntario)
 	interes = models.ForeignKey(Intereses)
@@ -43,6 +53,9 @@ class InteresesVoluntarios(models.Model):
 class InteresesOrganizaciones(models.Model):
 	organizacion = models.ForeignKey(Organizacion)
 	interes = models.ForeignKey(Intereses)
+
+"""
+
 
 class Proyecto(models.Model):
 	descripcion = models.CharField(max_length=350)
@@ -57,11 +70,14 @@ class Puesto(models.Model):
 	descripcion = models.CharField(max_length=350)
 	forma_trabajo = models.CharField(max_length=350)
 	fecha_limite = models.DateField(null=True)
-	
+"""	
 class InteresesPuesto(models.Model):
 	puesto = models.ForeignKey(Puesto)
 	interes = models.ForeignKey(Intereses)
 	
+"""
+
+
 class EmpresasAplicando(models.Model):
 	empresa = models.ForeignKey(Organizacion)
 	puesto = models.ForeignKey(Puesto)
