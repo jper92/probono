@@ -1,6 +1,8 @@
 
 from models import *
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
+import datetime
 
 class FormularioONG(forms.ModelForm):
 	
@@ -20,13 +22,14 @@ class FormularioVoluntario (forms.ModelForm):
 	
 	username = forms.CharField(max_length=50)
 	password = forms.CharField(max_length=50, widget = forms.PasswordInput)
-	intereses = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple)
-	sexo = forms.TypedChoiceField(coerce=lambda x: True if x=='Masculino' else False,
+	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox inline'}), )
+	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple)
+	sexo = forms.TypedChoiceField(coerce=lambda x: True if x=='True' else False,
 									choices =((False,'Femenino'), (True,'Masculino')), widget = forms.RadioSelect)
 	class Meta:
 		model = Voluntario
 		exclude = ('user')
-#		widgets = { 'intereses': forms.CheckboxSelectMultiple(),  }
+		widgets = { 'nacimiento': SelectDateWidget(years=range(datetime.datetime.now().year-50, datetime.datetime.now().year-9)),  }
 		
 class FormularioProyecto (forms.ModelForm):
 	
