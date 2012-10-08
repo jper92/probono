@@ -41,7 +41,8 @@ class Organizacion(models.Model):
 	es_empresa = models.BooleanField()
 	expira = models.DateField()
 	user = models.OneToOneField(User)
-	intereses = models.ManyToManyField(Intereses)
+	especialidades = models.ManyToManyField(Intereses, related_name="especialidades_org")
+	favoritos = models.ManyToManyField(Intereses, related_name="favoritos_org")
 	#logo
 	
 
