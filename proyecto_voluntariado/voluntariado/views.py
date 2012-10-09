@@ -72,3 +72,26 @@ def about(request):
 	
 def contact_us(request):
 	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
+
+###@login_required
+def match_search(request, tipo, id_req):
+    lista=[]
+    id_req = int(id_req)
+    #print tipo,id_req
+    if tipo=='voluntario':
+        especialidades = Voluntario.objects.get(user=id_req).especialidades.all()
+        favoritos = Voluntario.objects.get(user=id_req).favoritos.all()
+        lista = Puesto.objects.all()
+        #print lista
+        for puesto in lista:
+            for favorito in favoritosv:
+                if not favorito in puesto.favoritos:
+                    lista.remove(puesto)
+            for especialidad in especialidades:
+                if not especialidad in puesto.especialidades:
+                    lista.remove(puesto)
+        #print lista
+    return render_to_response('match_search.html',{'tipo':tipo,'lista':lista}, context_instance=RequestContext(request))
+
+
+
