@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+
+{% block panel %}
+              <li><a href="../../">Inicio</a></li>
+              <li class="active" ><a href="../../about/">Acerca de</a></li>
+              <li><a href="../../contact/">Contáctanos</a></li>
+{% endblock %}
+
+{% block principal %}
+    {% if tipo == 'voluntario' %}
+        <h3>Empleos recomendados:</h3>
+        <p>
+        {% if lista %}
+            {% for empleo in lista %}
+                <!-- TODO presentar resultados en tablas -->
+                <a href="../../puesto/{{empleo.id}}/">{{empleo.descripcion}}</a><br>
+            {% endfor %}
+        {% else %}
+            No se obtuvo ningun resultado.
+        {% endif %}
+        </p>
+    {% endif %}
+
+
+    <!----
+    {% if tipo == 'ong' %}
+        TODO
+    {% endif %}
+
+    {% if tipo == 'empresa' %}
+        TODO
+    {% endif %}
+    ---->
+
+{% endblock %}
