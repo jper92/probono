@@ -41,7 +41,7 @@ class Organizacion(models.Model):
 	info_adicional=models.CharField(max_length=350, null=True)
 	linkedin = models.CharField(max_length=30, null=True)
 	es_empresa = models.BooleanField()
-	expira = models.DateField()
+	expira = models.DateField(null=True)
 	user = models.OneToOneField(User)
 	especialidades = models.ManyToManyField(Intereses, related_name="especialidades_org")
 	favoritos = models.ManyToManyField(Intereses, related_name="favoritos_org")
@@ -73,6 +73,9 @@ class Puesto(models.Model):
 	descripcion = models.CharField(max_length=350)
 	forma_trabajo = models.CharField(max_length=350)
 	fecha_limite = models.DateField(null=True)
+	especialidades = models.ManyToManyField(Intereses, related_name="especialidades_puesto")
+	favoritos = models.ManyToManyField(Intereses, related_name="favoritos_puesto")
+
 """	
 class InteresesPuesto(models.Model):
 	puesto = models.ForeignKey(Puesto)

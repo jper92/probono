@@ -5,4 +5,5 @@ urlpatterns = patterns('voluntariado.views',
     url(r'^nuevovoluntario/$', 'ingreso_voluntario'),
     url(r'^nuevaempresa/$', 'ingreso_empresa'),
     url(r'^profile/$', 'volunteer_profile'),
+    url(r'^(voluntario)/(\d+)/buscar_empleo/$', 'match_search'),
 )
