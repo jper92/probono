@@ -52,11 +52,11 @@ def ingreso_voluntario(request):
 			form = FormularioVoluntario(request.POST, instance = vol)
 			if form.is_valid():
 				interesado = form.save()
-				return render_to_response('volunteer_profile.html', {'form': form }, context_instance=RequestContext(request))
+				return render_to_response('volunteer_profile.html', {'form': form , 'title':'Nuevo voluntario' }, context_instance=RequestContext(request))
 			else:
 				user.delete()
 				return render_to_response('new_volunteer.html',{'form':form}, context_instance=RequestContext(request))
-		return render_to_response('new_volunteer.html',{'form':form, 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
+		return render_to_response('new_volunteer.html',{'form':form, 'title':'Nuevo voluntario', 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
 	else:
 		form = FormularioVoluntario()
 	return render_to_response('new_volunteer.html', {'form': form, 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
