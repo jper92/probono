@@ -41,7 +41,7 @@ class Organizacion(models.Model):
 	info_adicional=models.CharField(max_length=350, null=True)
 	linkedin = models.CharField(max_length=30, null=True)
 	es_empresa = models.BooleanField()
-	expira = models.DateField(null=True)
+	expira = models.DateField()
 	user = models.OneToOneField(User)
 	especialidades = models.ManyToManyField(Intereses, related_name="especialidades_org")
 	favoritos = models.ManyToManyField(Intereses, related_name="favoritos_org")
