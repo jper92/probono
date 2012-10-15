@@ -67,6 +67,10 @@ def volunteer_profile(request, id_voluntario):
 	vol = Voluntario.objects.get(user=id_voluntario)
 	return render_to_response('volunteer_profile.html', {'vol': vol, 'current': datetime.datetime.now().year - vol.nacimiento.year }, context_instance=RequestContext(request))
 
+def ong_profile(request, id_ong):
+	ong = Organizacion.objects.get(user=id_ong)
+	return render_to_response('ong_profile.html', {'ong':ong }, context_instance=RequestContext(request))
+
 def about(request):
 	return render_to_response('about.html',{}, context_instance=RequestContext(request))
 	
