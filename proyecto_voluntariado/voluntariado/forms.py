@@ -40,7 +40,7 @@ class FormularioVoluntario (forms.ModelForm):
 	username = forms.CharField(max_length=50)
 	password = forms.CharField(max_length=50, widget = forms.PasswordInput)
 	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox inline'}), )
-	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple)
+	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox inline'}))
 	sexo = forms.TypedChoiceField(coerce=lambda x: True if x=='True' else False,
 									choices =((False,'Femenino'), (True,'Masculino')), widget = forms.RadioSelect)
 	escolaridad = forms.ChoiceField(choices = Voluntario_choices)

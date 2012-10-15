@@ -21,14 +21,15 @@
 			{{ error }}
 		</div>
 	{% endif %}
-	<form class="form-horizontal" method="POST" action="." > {% csrf_token %}
 	<h1>{{ title }}</h1>
-	<legend>Por favor, complete los siguientes campos</legend>
+	<p>Por favor, complete los siguientes campos</p>
+</div>
+
+<form class="well form-horizontal" method="POST" action="." > {% csrf_token %}
 		{{ form }}
 		<br><br>
 		<button type="submit" class="btn btn-primary">Guardar</button>
 	</form>
-</div>
 {% endblock %}
 
 {% block scripts %}

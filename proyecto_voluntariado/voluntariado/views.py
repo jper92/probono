@@ -6,7 +6,7 @@ from django.template import *
 
 from models import Organizacion, Voluntario
 from forms import *
-from django.forms.models import modelformset_factory
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
@@ -53,7 +53,7 @@ def ingreso_voluntario(request):
 			form = FormularioVoluntario(request.POST, instance = vol)
 			if form.is_valid():
 				interesado = form.save()
-				return render_to_response('volunteer_profile.html', {'form': form , 'title':'Nuevo voluntario' }, context_instance=RequestContext(request))
+				return redirect('/voluntario/' + str(vol.user_id))
 			else:
 				user.delete()
 				return render_to_response('new_volunteer.html',{'form':form}, context_instance=RequestContext(request))
@@ -139,5 +139,6 @@ def new_interest(request, redir):
 		form = FormInteres()
 		return render_to_response('new_interest.html', { 'form': form , 'title': u'Nuevo inter\u00e9s', 'favoritos': Intereses.objects.filter(es_favorito=True).order_by('nombre'), 'especialidades': Intereses.objects.filter(es_favorito=False).order_by('nombre')}, context_instance=RequestContext(request))
 
-#def save_interest(request, redirect):
+def main_view(request):
+	return render_to_response('main.html', context_instance=RequestContext(request))
 	
