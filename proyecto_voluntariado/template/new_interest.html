@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+{% block panel %}
+<li class="active"><a href="#">Inicio</a></li>
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Información <b class="caret"></b>
+	</a>
+	<ul class="dropdown-menu">
+	<li><a href="../info/organizaciones" >Organizaciones</a></li>
+	<li><a href="../info/empresas" >Empresas</a></li>
+	<li><a href="../info/voluntarios" >Voluntarios</a></li>
+	</ul>
+</li>
+<li><a href="../contact/">Contacto</a></li>
+<li><a href="../about/">Acerca de</a></li>
+{% endblock %}
+
+{% block principal %}
+<div class="hero-unit">
+	<p><strong>Queremos saber tus cualidades, si tu especialidad o pasatiempo no aparece en esta lista te invitamos a que la agregues y así poder tener una mejor experiencia</strong></p>
+	<br>
+	<div class="row">
+		<div class="span offset1">
+			<table class="table table-bordered">
+				<caption>Especialidades/Profesionales</caption>
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in especialidades %}
+					<tr>
+						<td>{{i.nombre}}</td>
+						<td>{{i.descripcion}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="span offset3">
+			<table class="table table-bordered">
+				<caption>Aficiones/Favoritos</caption>
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in favoritos %}
+					<tr>
+						<td>{{i.nombre}}</td>
+						<td>{{i.descripcion}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% if error %}
+		<div class='alert alert-error'>
+			{{ error }}
+		</div>
+	{% endif %}
+	{% if success %}
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">x</button>
+			{{success}}
+		</div>
+	{% endif %}
+</div>
+<form class="well form-horizontal" method="POST" action="." > {% csrf_token %}
+	<h1>{{ title }}</h1>
+	<legend>Por favor, complete los siguientes campos</legend>
+		{% for i in form %} 
+		{{ i }}
+		{% endfor %}
+		<br><br>
+		<button type="submit" class="btn btn-primary" value="save_btn" name="save_btn">Guardar</button>
+		<button type="submit" class="btn btn-primary" value="save_and_other" name="save_and_other">Guardar y Agregar nuevo</button>
+		<button type="submit" class="btn" value="skip" name="skip">Saltar</button>
+	</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$('.errorlist').wrap('<div class="alert alert-error"></div>')
+	$('.alert.alert-error').prepend('<button type="button" class="close" data-dismiss="alert">x</button>')
+</script>
+{% endblock %}
+
