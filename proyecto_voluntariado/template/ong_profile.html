@@ -5,8 +5,9 @@
   <div class="row-fluid">
     <div class="span2">
       <!--Sidebar content-->
-      <h2>{{ vol.nombres }}, {{vol.apellidos}}</h2>
-      <p><strong> Edad :</strong>{{ current }}</p>
+      <h2>{{ ong.nombre }}</h2>
+      <p>{{ ong.descripcion }}</p>
+      <p><b>Objetivos:</b><br>{{ ong.objetivos }}</p>
     </div>
     <div class="span10">
       <h1>Especialidades</h1>
@@ -18,7 +19,7 @@
 			  </tr>
 		  </thead>
 		  <tbody>
-			{% for i in vol.especialidades.all %}
+			{% for i in ong.especialidades.all %}
 			<tr>
 				<td>{{ i.nombre }}</td>
 				<td>{{ i.descripcion }}</td>
@@ -35,7 +36,7 @@
 			  </tr>
 		  </thead>
 		  <tbody>
-			{% for i in vol.favoritos.all %}
+			{% for i in ong.favoritos.all %}
 			<tr>
 				<td>{{ i.nombre }}</td>
 				<td>{{ i.descripcion }}</td>
