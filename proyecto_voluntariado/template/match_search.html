@@ -13,7 +13,7 @@
         {% if lista %}
             {% for empleo in lista %}
                 <!-- TODO presentar resultados en tablas -->
-                <a href="../../puesto/{{empleo.id}}/">{{empleo.descripcion}}</a><br>
+                <a href="../../puesto/{{empleo.user}}/">{{empleo.descripcion}}</a><br>
             {% endfor %}
         {% else %}
             No se obtuvo ningun resultado.
@@ -22,11 +22,20 @@
     {% endif %}
 
 
-    <!----
     {% if tipo == 'ong' %}
-        TODO
+        <h3>Voluntarios recomendados:</h3>
+        <p>
+        {% if lista %}
+            {% for voluntario in lista %}
+                <!-- TODO presentar resultados en tablas -->
+                <a href="../../puesto/{{voluntario.user}}/">{{voluntario.nombres}}</a><br>
+            {% endfor %}
+        {% else %}
+            No se obtuvo ningun resultado.
+        {% endif %}
+        </p>
     {% endif %}
-
+    <!----
     {% if tipo == 'empresa' %}
         TODO
     {% endif %}

@@ -63,8 +63,8 @@ def ingreso_voluntario(request):
 
 
 
-def volunteer_profile(request):
-	vol = Voluntario.objects.get(user='15')
+def volunteer_profile(request, id_voluntario):
+	vol = Voluntario.objects.get(user=id_voluntario)
 	return render_to_response('volunteer_profile.html', {'vol': vol, 'current': datetime.datetime.now().year - vol.nacimiento.year }, context_instance=RequestContext(request))
 
 def about(request):
@@ -74,23 +74,34 @@ def contact_us(request):
 	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
 
 ###@login_required
-def match_search(request, tipo, id_req):
+def buscar_empleo(request, tipo, id_req):
     lista=[]
     id_req = int(id_req)
-    #print tipo,id_req
+
     if tipo=='voluntario':
         especialidades = Voluntario.objects.get(user=id_req).especialidades.all()
         favoritos = Voluntario.objects.get(user=id_req).favoritos.all()
         lista = Puesto.objects.all()
-        #print lista
         for puesto in lista:
-            for favorito in favoritosv:
+            for favorito in favoritos:
                 if not favorito in puesto.favoritos:
                     lista.remove(puesto)
             for especialidad in especialidades:
                 if not especialidad in puesto.especialidades:
                     lista.remove(puesto)
-        #print lista
+
+    if tipo=='ong':
+        especialidades = Puesto.objects.get(user=id_req2).especialidades.all()
+        favoritos = Puesto.objects.get(user=id_req).favoritos.all()
+        lista = Voluntario.objects.all()
+        for voluntario in lista:
+            for favorito in favoritos:
+                if not favorito in voluntario.favoritos:
+                    lista.remove(puesto)
+            for especialidad in especialidades:
+                if not especialidad in voluntario.especialidades:
+                    lista.remove(puesto)
+
     return render_to_response('match_search.html',{'tipo':tipo,'lista':lista}, context_instance=RequestContext(request))
 
 
