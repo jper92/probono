@@ -20,7 +20,7 @@ class FormularioONG(forms.ModelForm):
 	
 	username = forms.CharField(max_length=50)
 	password = forms.CharField(max_length=50, widget = forms.PasswordInput)
-	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox inline'}), )
+	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False).order_by('nombre'), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox inline'}), )
 	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple)	
 	class Meta:
 		model = Organizacion
@@ -60,5 +60,6 @@ class FormInteres (forms.ModelForm):
 									choices =((False,'Especialidad/Profesional'), (True,'Afición/favorito')), widget = forms.RadioSelect)
 	class Meta:
 		model = Intereses
-		widgets = { 'descripcion': forms.Textarea(attrs = {'rows': 5})}
+		widgets = { 'descripcion': forms.Textarea(attrs = {'rows': 5, 'placeholder':u'Descripci\u00f3n'}),
+					'nombre': forms.TextInput(attrs={'placeholder':'Nombre'})}
 

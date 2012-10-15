@@ -1,11 +1,12 @@
 # Create your views here.
 import datetime
 from django.http import *
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,redirect
 from django.template import *
 
 from models import Organizacion, Voluntario
 from forms import *
+from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
@@ -20,11 +21,11 @@ def ingreso_organizacion(request):
 			form = FormularioONG(request.POST, instance = org)
 			if form.is_valid():
 				form.save()
-				return render_to_response('volunteer_profile.html', {'form': form }, context_instance=RequestContext(request))
+				return render_to_response('volunteer_profile.html', {'form': form, 'title': 'Nueva ONG' }, context_instance=RequestContext(request))
 			else:
 				user.delete()
 				return render_to_response('new_volunteer.html',{'form':form}, context_instance=RequestContext(request))
-		return render_to_response('new_volunteer.html',{'form':form, 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
+		return render_to_response('new_volunteer.html',{'form':form, 'error': form['username'].value() + ' already exists', 'title': 'Nueva ONG'}, context_instance=RequestContext(request))
 	else:
 		form = FormularioONG()
 	return render_to_response('new_volunteer.html', {'form': form, 'title': 'Nueva ONG'}, context_instance=RequestContext(request))
@@ -74,7 +75,7 @@ def contact_us(request):
 	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
 
 ###@login_required
-def buscar_empleo(request, tipo, id_req):
+def match_search(request, tipo, id_req):
     lista=[]
     id_req = int(id_req)
 
@@ -104,5 +105,35 @@ def buscar_empleo(request, tipo, id_req):
 
     return render_to_response('match_search.html',{'tipo':tipo,'lista':lista}, context_instance=RequestContext(request))
 
+#  
+#  name: new_interest
+#  @param request, redirect: 0 es para nuevo voluntario, 1 es para nueva org, 2 es para empresa
+#  @return http_response
+#  
 
+def new_interest(request, redir):
+	
+	if request.method=='POST':
+		#print 'save_btn' in request.POST
+		red = '/nuevovoluntario/'
+		if redir=='1':
+			red = '/nuevaorg/'
+		elif redir=='2':
+			red = '/nuevaempresa/'
+		if 'skip' in request.POST:
+			return redirect(red)
+		form = FormInteres(request.POST)
+		if form.is_valid():
+			form.save()
+		else:
+			return render_to_response('new_interest.html', {'form': form, 'title': u'Nuevo inter\u00e9s'}, context_instance=RequestContext(request))
+		if 'save_and_other' in request.POST:
+			return render_to_response('new_interest.html', {'form': FormInteres(), 'title': u'Nuevo inter\u00e9s', 'success': 'Gracias, dato guardado' , 'favoritos': Intereses.objects.filter(es_favorito=True).order_by('nombre'), 'especialidades': Intereses.objects.filter(es_favorito=False).order_by('nombre')}, context_instance=RequestContext(request))
+		else:
+			return redirect(red)
+	else:
+		form = FormInteres()
+		return render_to_response('new_interest.html', { 'form': form , 'title': u'Nuevo inter\u00e9s', 'favoritos': Intereses.objects.filter(es_favorito=True).order_by('nombre'), 'especialidades': Intereses.objects.filter(es_favorito=False).order_by('nombre')}, context_instance=RequestContext(request))
 
+#def save_interest(request, redirect):
+	
