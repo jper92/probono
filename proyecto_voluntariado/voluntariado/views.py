@@ -74,7 +74,7 @@ def contact_us(request):
 	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
 
 ###@login_required
-def buscar_empleo(request, tipo, id_req):
+def match_serch(request, tipo, id_req):
     lista=[]
     id_req = int(id_req)
 
