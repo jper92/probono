@@ -78,34 +78,63 @@ def contact_us(request):
 
 ###@login_required
 def match_search(request, tipo, id_req):
-    lista=[]
-    id_req = int(id_req)
+	lista=[]
+	lista2=[]
+	id_req = int(id_req)
+	volemp = None
 
-    if tipo=='voluntario':
-        especialidades = Voluntario.objects.get(user=id_req).especialidades.all()
-        favoritos = Voluntario.objects.get(user=id_req).favoritos.all()
-        lista = Puesto.objects.all()
-        for puesto in lista:
-            for favorito in favoritos:
-                if not favorito in puesto.favoritos:
-                    lista.remove(puesto)
-            for especialidad in especialidades:
-                if not especialidad in puesto.especialidades:
-                    lista.remove(puesto)
+	if tipo=='voluntario':
+		volemp = Voluntario.objects.get(user=id_req)
+	elif tipo=='empresa':
+		volemp = Organizacion.objects.get(user=id_req)
+	
+	if tipo=='voluntario' or tipo=='empresa':
+		especialidades = volemp.especialidades.all()
+		favoritos = volemp.favoritos.all()
+		puestos = Puesto.objects.all()
+		
+		for puesto in puestos:
+			if not puesto in lista:
+				for favorito in favoritos:
+					if favorito in puesto.favoritos.all():
+						lista.append(puesto)
+						break
+			if not puesto in lista:
+				for especialidad in especialidades:
+					if especialidad in puesto.especialidades.all():
+						lista.append(puesto)
+						break
 
-    if tipo=='ong':
-        especialidades = Puesto.objects.get(user=id_req2).especialidades.all()
-        favoritos = Puesto.objects.get(user=id_req).favoritos.all()
-        lista = Voluntario.objects.all()
-        for voluntario in lista:
-            for favorito in favoritos:
-                if not favorito in voluntario.favoritos:
-                    lista.remove(puesto)
-            for especialidad in especialidades:
-                if not especialidad in voluntario.especialidades:
-                    lista.remove(puesto)
+	if tipo=='ong':
+		especialidades = Puesto.objects.get(id=id_req).especialidades.all()
+		favoritos = Puesto.objects.get(id=id_req).favoritos.all()
+		
+		vlista = Voluntario.objects.all()
+		elista = Organizacion.objects.filter(es_empresa=True)
+		
+		for voluntario in vlista:
+			for especialidad in especialidades:
+				if not especialidad in voluntario.especialidades.all():
+					lista.remove(voluntario)
+		for voluntario in vlista:
+			if not voluntario in lista:
+				for favorito in favoritos:
+					if favorito in voluntario.favoritos.all():
+						lista.append(voluntario)
+						break
+			
+		for empresa in elista:
+			for especialidad in especialidades:
+				if not especialidad in empresa.especialidades.all():
+					lista.remove(empresa)
+		for empresa in elista:
+			if not empresa in lista2:
+				for favorito in favoritos:
+					if favorito in empresa.favoritos.all():
+						lista.append(empresa)
+						break
 
-    return render_to_response('match_search.html',{'tipo':tipo,'lista':lista}, context_instance=RequestContext(request))
+	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista,'lista':lista2}, context_instance=RequestContext(request))
 
 #  
 #  name: new_interest
