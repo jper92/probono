@@ -79,6 +79,7 @@ def contact_us(request):
 ###@login_required
 def match_search(request, tipo, id_req):
 	lista=[]
+	lista2=[]
 	id_req = int(id_req)
 	volemp = None
 
@@ -107,23 +108,33 @@ def match_search(request, tipo, id_req):
 	if tipo=='ong':
 		especialidades = Puesto.objects.get(user=id_req).especialidades.all()
 		favoritos = Puesto.objects.get(user=id_req).favoritos.all()
-		voluntarios = Voluntario.objects.all()
-		empresas = Organizacion.objects.all()
 		
-		for voluntario in voluntarios:
+		vlista = Voluntario.objects.all()
+		elista = Organizacion.objects.filter(es_empresa=True)
+		
+		for voluntario in vlista:
+			for especialidad in especialidades:
+				if not especialidad in voluntario.especialidades.all():
+					lista.remove(voluntario)
+		for voluntario in vlista:
 			if not voluntario in lista:
 				for favorito in favoritos:
 					if favorito in voluntario.favoritos.all():
-						lista.append(puesto)
+						lista.append(voluntario)
 						break
-			if not voluntario in lista:
-				for especialidad in especialidades:
-					if especialidad in voluntario.especialidades.all():
-						lista.append(puesto)
+			
+		for empresa in elista:
+			for especialidad in especialidades:
+				if not especialidad in empresa.especialidades.all():
+					lista.remove(empresa)
+		for empresa in elista:
+			if not empresa in lista2:
+				for favorito in favoritos:
+					if favorito in empresa.favoritos.all():
+						lista.append(empresa)
 						break
-		# TODO agregar empresas, cuidando que no se agregue a si misma
 
-	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista}, context_instance=RequestContext(request))
+	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista,'lista':lista2}, context_instance=RequestContext(request))
 
 #  
 #  name: new_interest

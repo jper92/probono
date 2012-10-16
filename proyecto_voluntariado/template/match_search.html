@@ -1,50 +1,67 @@
 {% extends 'index.html' %}
 
 {% block panel %}
-              <li><a href="../../">Inicio</a></li>
-              <li class="active" ><a href="../../about/">Acerca de</a></li>
-              <li><a href="../../contact/">Contáctanos</a></li>
+		<li><a href="../../">Inicio</a></li>
+		<li class="active" ><a href="../../about/">Acerca de</a></li>
+		<li><a href="../../contact/">Contáctanos</a></li>
 {% endblock %}
 
 {% block principal %}
-    {% if tipo == 'voluntario' or tipo == 'empresa' %}
-        <h3>Empleos recomendados:</h3>
-        <p>
-        {% if lista %}
-            {% for empleo in lista %}
-                <!-- TODO presentar resultados en tablas -->
-                {{empleo.descripcion}}<br>
-            {% endfor %}
-        {% else %}
-            No se obtuvo ningun resultado.
-        {% endif %}
-        </p>
-    {% endif %}
+	{% if tipo == 'voluntario' or tipo == 'empresa' %}
+		<h1>Empleos recomendados:</h1>
+		{% if lista %}
+		<table class="table table-striped">
+			<thead><tr>
+				<th>Descripci&oacute;n</th>
+			</tr></thead>
+			<tbody>
+			{% for empleo in lista %}
+			<tr>
+				<td>{{empleo.descripcion}}</td>
+			</tr>
+			{% endfor %}
+		{% else %}
+			<p>No se obtuvo ningun resultado.</p>
+		{% endif %}
+	{% endif %}
 
 
-    {% if tipo == 'ong' %}
-        <h3>Voluntarios recomendados:</h3>
-        <p>
-        {% if lista %}
-            {% for voluntario in lista %}
-                <!-- TODO presentar resultados en tablas -->
-                {{voluntario.nombres}}<br>
-            {% endfor %}
-        {% else %}
-            No se obtuvo ningun resultado.
-        {% endif %}
-        </p>
-        <h3>Empresas recomendadas:</h3>
-        <p>
-        {% if lista %}
-            {% for empresa in lista %}
-                <!-- TODO presentar resultados en tablas -->
-                {{empresa.nombre}}<br>
-            {% endfor %}
-        {% else %}
-            No se obtuvo ningun resultado.
-        {% endif %}
-        </p>
-    {% endif %}
+	{% if tipo == 'ong' %}
+		<h1>Voluntarios recomendados:</h1>
+		{% if lista %}
+		<table class="table table-striped">
+			<thead><tr>
+				<th>Nombres</th>
+				<th>Apellidos</th>
+			</tr></thead>
+			<tbody>
+			{% for voluntario in lista %}
+			<tr>
+				<td>{{voluntario.nombres}}</td>
+				<td>{{voluntario.apellidos}}</td>
+			</tr>
+			{% endfor %}
+		{% else %}
+			<p>No se obtuvo ningun resultado.</p>
+		{% endif %}
+		
+		<h1>Empresas recomendadas:</h1>
+		{% if lista %}
+		<table class="table table-striped">
+			<thead><tr>
+				<th>Nombre</th>
+				<th>Representante</th>
+			</tr></thead>
+			<tbody>
+			{% for empresa in lista %}
+			<tr>
+				<td>{{empresa.nombre}}</td>
+				<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
+			</tr>
+			{% endfor %}
+		{% else %}
+			<p>No se obtuvo ningun resultado.</p>
+		{% endif %}
+	{% endif %}
 
 {% endblock %}
