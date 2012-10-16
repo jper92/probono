@@ -8,7 +8,7 @@ from models import Organizacion, Voluntario
 from forms import *
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 # Estos 2 metodos indican a la view ingreso_organizacion si se trata de ONG o de empresa
 def ingreso_ong(request):
@@ -138,5 +138,11 @@ def new_interest(request, redir):
 		return render_to_response('new_interest.html', { 'form': form , 'title': u'Nuevo inter\u00e9s', 'favoritos': Intereses.objects.filter(es_favorito=True).order_by('nombre'), 'especialidades': Intereses.objects.filter(es_favorito=False).order_by('nombre')}, context_instance=RequestContext(request))
 
 def main_view(request):
-	return render_to_response('main.html', context_instance=RequestContext(request))
+	if request.method == 'POST':
+		print request.POST
+		user = authenticate(username=request.POST['username'], password = request.POST['password'])
+		if user is not None:
+			login(request, user)
+			return render_to_response('main.html', {'user': user, 'log':True}, context_instance=RequestContext(request))
+	return render_to_response('main.html',{'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
 	

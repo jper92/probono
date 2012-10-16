@@ -13,6 +13,19 @@
 </li>
 <li><a href="/contact/">Contacto</a></li>
 <li><a href="/about/">Acerca de</a></li>
+
+{% endblock %}
+
+{% block signin %}
+{% if log %}
+<p> Logged in as {{user.username}}</p>
+{% else %}
+<form class="navbar-form pull-right" action = "." method="POST">{% csrf_token %}
+	<input class="span2" type="text" class="input-small" placeholder="Usuario" name="username">
+	<input class="span2" type="password" class="input-small" placeholder="Contraseña" name = "password">
+	<button type="submit" class="btn" value="login" name="login">Iniciar sesión</button>
+</form>
+{% endif %}
 {% endblock %}
 
 {% block principal %}
