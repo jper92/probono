@@ -106,8 +106,8 @@ def match_search(request, tipo, id_req):
 						break
 
 	if tipo=='ong':
-		especialidades = Puesto.objects.get(user=id_req).especialidades.all()
-		favoritos = Puesto.objects.get(user=id_req).favoritos.all()
+		especialidades = Puesto.objects.get(id=id_req).especialidades.all()
+		favoritos = Puesto.objects.get(id=id_req).favoritos.all()
 		
 		vlista = Voluntario.objects.all()
 		elista = Organizacion.objects.filter(es_empresa=True)
