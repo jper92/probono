@@ -7,13 +7,13 @@
 {% endblock %}
 
 {% block principal %}
-    {% if tipo == 'voluntario' %}
+    {% if tipo == 'voluntario' or tipo == 'empresa' %}
         <h3>Empleos recomendados:</h3>
         <p>
         {% if lista %}
             {% for empleo in lista %}
                 <!-- TODO presentar resultados en tablas -->
-                <a href="../../puesto/{{empleo.user}}/">{{empleo.descripcion}}</a><br>
+                {{empleo.descripcion}}<br>
             {% endfor %}
         {% else %}
             No se obtuvo ningun resultado.
@@ -28,17 +28,23 @@
         {% if lista %}
             {% for voluntario in lista %}
                 <!-- TODO presentar resultados en tablas -->
-                <a href="../../puesto/{{voluntario.user}}/">{{voluntario.nombres}}</a><br>
+                {{voluntario.nombres}}<br>
+            {% endfor %}
+        {% else %}
+            No se obtuvo ningun resultado.
+        {% endif %}
+        </p>
+        <h3>Empresas recomendadas:</h3>
+        <p>
+        {% if lista %}
+            {% for empresa in lista %}
+                <!-- TODO presentar resultados en tablas -->
+                {{empresa.nombre}}<br>
             {% endfor %}
         {% else %}
             No se obtuvo ningun resultado.
         {% endif %}
         </p>
     {% endif %}
-    <!----
-    {% if tipo == 'empresa' %}
-        TODO
-    {% endif %}
-    ---->
 
 {% endblock %}
