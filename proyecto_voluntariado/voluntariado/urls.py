@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, include, url
 urlpatterns = patterns('voluntariado.views',
 	url(r'^main/$', 'main_view'),
 	url(r'^intereses/(\d+)/$','new_interest'),
-    url(r'^nuevaorg/$', 'ingreso_organizacion'),
+    url(r'^nuevaorg/$', 'ingreso_ong'),
     url(r'^nuevovoluntario/$', 'ingreso_voluntario'),
     url(r'^nuevaempresa/$', 'ingreso_empresa'),
     url(r'^voluntario/(\d+)/$', 'volunteer_profile'),
