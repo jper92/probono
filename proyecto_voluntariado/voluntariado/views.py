@@ -3,6 +3,7 @@ import datetime
 from django.http import *
 from django.shortcuts import render_to_response,redirect
 from django.template import *
+from django.db.models import Q
 
 from models import Organizacion, Voluntario
 from forms import *
@@ -87,6 +88,7 @@ def match_search(request, tipo, id_req):
 	lista2=[]
 	id_req = int(id_req)
 	volemp = None
+	q = Q()
 
 	if tipo=='voluntario':
 		volemp = Voluntario.objects.get(user=id_req)
@@ -96,50 +98,27 @@ def match_search(request, tipo, id_req):
 	if tipo=='voluntario' or tipo=='empresa':
 		especialidades = volemp.especialidades.all()
 		favoritos = volemp.favoritos.all()
-		puestos = Puesto.objects.all()
+		for f in favoritos:
+			q.add(Q(favoritos=f),Q.OR)
+		for e in especialidades:
+			q.add(Q(especialidades=e),Q.OR)
 		
-		for puesto in puestos:
-			if not puesto in lista:
-				for favorito in favoritos:
-					if favorito in puesto.favoritos.all():
-						lista.append(puesto)
-						break
-			if not puesto in lista:
-				for especialidad in especialidades:
-					if especialidad in puesto.especialidades.all():
-						lista.append(puesto)
-						break
+		lista = Puesto.objects.filter(q)
 
-	if tipo=='ong':
+	elif tipo=='ong':
 		especialidades = Puesto.objects.get(id=id_req).especialidades.all()
 		favoritos = Puesto.objects.get(id=id_req).favoritos.all()
 		
-		vlista = Voluntario.objects.all()
-		elista = Organizacion.objects.filter(es_empresa=True)
+		for e in especialidades:
+			q.add(Q(especialidades=e),Q.OR)
+		for f in favoritos:
+			q.add(Q(favoritos=f),Q.OR)
 		
-		for voluntario in vlista:
-			for especialidad in especialidades:
-				if not especialidad in voluntario.especialidades.all():
-					lista.remove(voluntario)
-		for voluntario in vlista:
-			if not voluntario in lista:
-				for favorito in favoritos:
-					if favorito in voluntario.favoritos.all():
-						lista.append(voluntario)
-						break
-			
-		for empresa in elista:
-			for especialidad in especialidades:
-				if not especialidad in empresa.especialidades.all():
-					lista.remove(empresa)
-		for empresa in elista:
-			if not empresa in lista2:
-				for favorito in favoritos:
-					if favorito in empresa.favoritos.all():
-						lista.append(empresa)
-						break
-
-	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista,'lista':lista2}, context_instance=RequestContext(request))
+		lista = Voluntario.objects.filter(q)
+		lista2 = Organizacion.objects.filter(Q(es_empresa=True), q)
+		print lista
+		print lista2
+	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
 
 #  
 #  name: new_interest

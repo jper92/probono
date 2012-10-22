@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block principal %}
+<div class="container-fluid">
+  <div class="row-fluid">
+	<div class="span10">
 	{% if tipo == 'voluntario' or tipo == 'empresa' %}
 		<h1>Empleos recomendados:</h1>
 		{% if lista %}
@@ -24,8 +27,9 @@
 			<p>No se obtuvo ningun resultado.</p>
 		{% endif %}
 	{% endif %}
-
-
+	</div>
+	
+	<div class="span10">
 	{% if tipo == 'ong' %}
 		<h1>Voluntarios recomendados:</h1>
 		{% if lista %}
@@ -46,14 +50,14 @@
 		{% endif %}
 		
 		<h1>Empresas recomendadas:</h1>
-		{% if lista %}
+		{% if lista2 %}
 		<table class="table table-striped">
 			<thead><tr>
 				<th>Nombre</th>
 				<th>Representante</th>
 			</tr></thead>
 			<tbody>
-			{% for empresa in lista %}
+			{% for empresa in lista2 %}
 			<tr>
 				<td>{{empresa.nombre}}</td>
 				<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
@@ -63,5 +67,7 @@
 			<p>No se obtuvo ningun resultado.</p>
 		{% endif %}
 	{% endif %}
-
+	</div>
+  </div>
+</div>
 {% endblock %}
