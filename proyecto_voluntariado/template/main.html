@@ -18,7 +18,7 @@
 
 {% block signin %}
 {% if log %}
-<p> Logged in as {{user.username}}</p>
+<p> Conectado como {{user.username}}</p>
 <form class="navbar-form pull-right" action="." method="POST">{% csrf_token %}<button type="submit" class="btn" value="logout" name="logout">Cerrar sesión</button></form>
 {% else %}
 <form class="navbar-form pull-right" action = "." method="POST">{% csrf_token %}
@@ -36,4 +36,51 @@
 {% endblock %}
 
 {% block principal %}
+{% if log %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+      <h2>{{ vol.nombres }}, {{vol.apellidos}}</h2>
+      <p><strong> Edad :</strong>{{ current }}</p>
+    </div>
+    <div class="span10">
+      <h1>Especialidades</h1>
+      <table class="table table-striped">
+		  <thead>
+			  <tr>
+				  <th>Especialidad</th>
+				  <th>Descripción</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			{% for i in vol.especialidades.all %}
+			<tr>
+				<td>{{ i.nombre }}</td>
+				<td>{{ i.descripcion }}</td>
+			</tr>
+			{% endfor %}
+		  </tbody>
+      </table>
+      <h1>Favoritos</h1>
+      <table class="table table-striped">
+		  <thead>
+			  <tr>
+				  <th>Favorito</th>
+				  <th>Descripción</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			{% for i in vol.favoritos.all %}
+			<tr>
+				<td>{{ i.nombre }}</td>
+				<td>{{ i.descripcion }}</td>
+			</tr>
+			{% endfor %}
+		  </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

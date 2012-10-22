@@ -16,6 +16,11 @@ def ingreso_ong(request):
 def ingreso_empresa(request):
 	return ingreso_organizacion(request, False)
 
+#  
+#  name: ingreso_organizacion
+#  @param request, es_ong: bool
+#  
+
 def ingreso_organizacion(request, es_ong):
 	if request.method == 'POST':
 		form = FormularioONG(request.POST)
@@ -39,9 +44,9 @@ def ingreso_organizacion(request, es_ong):
 
 
 
-
+# Vista ingreso voluntario
 def ingreso_voluntario(request):
-	if request.method == 'POST':
+	if request.method == 'POST':	# Intenta crear un usuario, si algo no es validado se eliminan todos los cambios
 		form = FormularioVoluntario(request.POST)
 		try:
 			user = User.objects.get(username=form['username'].value())
@@ -176,5 +181,8 @@ def main_view(request):
 				return render_to_response('main.html', {'user': user, 'log':False, 'invalid':True}, context_instance=RequestContext(request))
 		else:
 			logout(request)
-	return render_to_response('main.html',{'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
+	vol = None
+	if request.user.is_authenticated():
+		vol = Voluntario.objects.get(user=request.user)
+	return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
 	

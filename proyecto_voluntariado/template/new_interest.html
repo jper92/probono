@@ -73,9 +73,9 @@
 <form class="well form-horizontal" method="POST" action="." > {% csrf_token %}
 	<h1>{{ title }}</h1>
 	<legend>Por favor, complete los siguientes campos</legend>
-		{% for i in form %} 
-		{{ i }}
-		{% endfor %}
+		
+		{{ form }}
+		
 		<br><br>
 		<button type="submit" class="btn btn-primary" value="save_btn" name="save_btn">Guardar</button>
 		<button type="submit" class="btn btn-primary" value="save_and_other" name="save_and_other">Guardar y Agregar nuevo</button>
