@@ -26,6 +26,9 @@ class Voluntario(models.Model):
 	user = models.OneToOneField(User)
 	especialidades = models.ManyToManyField(Intereses, related_name="especialidades")
 	favoritos = models.ManyToManyField(Intereses, related_name="favoritos")
+	puntos = models.IntegerField()
+	evaluacion = models.IntegerField()
+	puestos = models.ManyToManyField(Puesto, through='VoluntariosAplicando')
 	#foto, cv
 	
 class Organizacion(models.Model):
@@ -45,6 +48,7 @@ class Organizacion(models.Model):
 	user = models.OneToOneField(User)
 	especialidades = models.ManyToManyField(Intereses, related_name="especialidades_org")
 	favoritos = models.ManyToManyField(Intereses, related_name="favoritos_org")
+	puestos = models.ManyToManyField(Puesto, through="EmpresasAplicando")
 	#logo
 	
 
