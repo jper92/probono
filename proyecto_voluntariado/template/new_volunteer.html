@@ -15,21 +15,51 @@
 {% endblock %}
 
 {% block principal %}
-<div class="hero-unit">
+
+<form class="well form-horizontal" method="POST" action="." > {% csrf_token %}
+	<h1>{{ title }}</h1>
+	<legend>Por favor, complete los siguientes campos</legend>
 	{% if error %}
 		<div class='alert alert-error'>
 			{{ error }}
 		</div>
 	{% endif %}
-	<h1>{{ title }}</h1>
-	<p>Por favor, complete los siguientes campos</p>
-</div>
-
-<form class="well form-horizontal" method="POST" action="." > {% csrf_token %}
 		{{ form }}
 		<br><br>
+		<p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>
+		<div class="modal hide fade" id="nuevoInteres" tabindex = "-1" role="dialog" aria-labelledby="nuevoInteresLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Nuevo Interés</h3>
+			</div>
+			<div class="modal-body">
+				{{ interes }}
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" name="nuevointeres" value="nuevointeres">Agregar</button>
+				<button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
+			</div>
+		</div>
 		<button type="submit" class="btn btn-primary">Guardar</button>
-	</form>
+		
+		
+		
+</form>
+	
+<button type="button" class="btn" data-toggle="modal" data-target="#myModal">Launch demo modal</button>
+<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+	<p>One fine body…</p>
+  </div>
+  <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	<button class="btn btn-primary">Save changes</button>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

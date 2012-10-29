@@ -48,6 +48,13 @@ def ingreso_organizacion(request, es_ong):
 # Vista ingreso voluntario
 def ingreso_voluntario(request):
 	if request.method == 'POST':	# Intenta crear un usuario, si algo no es validado se eliminan todos los cambios
+		if 'nuevointeres' in request.POST:
+			form = FormInteres(request.POST)
+			if form.is_valid():
+				form.save()
+				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario'}, context_instance=RequestContext(request))
+			else:
+				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario', 'error':'Error: No se pudo guardar el interes'}, context_instance=RequestContext(request))
 		form = FormularioVoluntario(request.POST)
 		try:
 			user = User.objects.get(username=form['username'].value())
@@ -60,11 +67,11 @@ def ingreso_voluntario(request):
 				return redirect('/voluntario/' + str(vol.user_id))
 			else:
 				user.delete()
-				return render_to_response('new_volunteer.html',{'form':form}, context_instance=RequestContext(request))
-		return render_to_response('new_volunteer.html',{'form':form, 'title':'Nuevo voluntario', 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
+				return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), }, context_instance=RequestContext(request))
+		return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), 'title':'Nuevo voluntario', 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
 	else:
 		form = FormularioVoluntario()
-	return render_to_response('new_volunteer.html', {'form': form, 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
+	return render_to_response('new_volunteer.html', {'form': form, 'interes': FormInteres(), 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
 
 
 
