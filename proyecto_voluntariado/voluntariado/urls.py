@@ -12,4 +12,5 @@ urlpatterns = patterns('voluntariado.views',
 	url(r'^(empresa)/(\d+)/buscar_empleo/$', 'match_search'),
 	url(r'^ong/(\d+)/$', 'ong_profile'),
 	url(r'^(ong)/\d+/buscar_voluntario/puesto/(\d+)/$', 'match_search'),
+	url(r'^linkedin/$','linkedin'),
 )

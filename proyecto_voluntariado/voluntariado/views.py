@@ -10,6 +10,7 @@ from forms import *
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from linkedin import hola, requestToken
 
 # Estos 2 metodos indican a la view ingreso_organizacion si se trata de ONG o de empresa
 def ingreso_ong(request):
@@ -48,6 +49,7 @@ def ingreso_organizacion(request, es_ong):
 # Vista ingreso voluntario
 def ingreso_voluntario(request):
 	if request.method == 'POST':	# Intenta crear un usuario, si algo no es validado se eliminan todos los cambios
+		# Si se elige agregar un nuevo interes
 		if 'nuevointeres' in request.POST:
 			form = FormInteres(request.POST)
 			if form.is_valid():
@@ -55,6 +57,12 @@ def ingreso_voluntario(request):
 				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario'}, context_instance=RequestContext(request))
 			else:
 				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario', 'error':'Error: No se pudo guardar el interes'}, context_instance=RequestContext(request))
+		
+		# Si se elige llenar datos por medio de LinkedIn
+		#elif 'pin_submit' in request.POST:
+			
+
+		# Aqui se asume que se guardara un nuevo voluntario.
 		form = FormularioVoluntario(request.POST)
 		try:
 			user = User.objects.get(username=form['username'].value())
@@ -172,3 +180,5 @@ def main_view(request):
 		vol = Voluntario.objects.get(user=request.user)
 	return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
 	
+def linkedin(request):
+	return HttpResponse(requestToken())
