@@ -73,7 +73,22 @@ def ingreso_voluntario(request):
 		form = FormularioVoluntario()
 	return render_to_response('new_volunteer.html', {'form': form, 'interes': FormInteres(), 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
 
+# Ingreso de nuevo proyecto
+def nuevo_proyecto(request, id_ong):
+	ong = Organizacion.objects.get(user=id_ong)
+	if request.method == 'POST':
+		form = FormularioProyecto(request.POST)
+		print form
+		if form.is_valid():
+			proyecto = form.save(commit = True)
+			return HttpResponseRedirect('../../../proyecto/'+str(proyecto.id))
+	else:
+		form = FormularioProyecto(initial={'organizacion':ong.correo})
+	return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
 
+def proyecto(request, id_proy):
+	proyecto = Proyecto.objects.get(id=id_proy)
+	return render_to_response('proyecto.html', {'proyecto':proyecto}, context_instance=RequestContext(request))
 
 def volunteer_profile(request, id_voluntario):
 	vol = Voluntario.objects.get(user=id_voluntario)

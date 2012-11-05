@@ -45,9 +45,13 @@ class FormularioVoluntario (forms.ModelForm):
 		widgets = { 'nacimiento': SelectDateWidget(years=range(datetime.datetime.now().year-50, datetime.datetime.now().year-9)), }
 		
 class FormularioProyecto (forms.ModelForm):
-	
 	class Meta:
 		model = Proyecto
+		#exclude = ('organizacion')
+		
+class FormularioPuesto (forms.ModelForm):
+	class Meta:
+		model = Puesto
 		
 class FormInteres (forms.ModelForm):
 	

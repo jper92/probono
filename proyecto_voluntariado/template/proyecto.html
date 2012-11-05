@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block principal %}
+	<H2>Proyectos de <b>{{proyecto.organizacion.nombre}}</b></H2>
+	<h3>Descripcion:</h3>
+	<p>{{proyecto.descripcion}}</p><br>
+	<h3>Objetivos:</h3>
+	<p>{{proyecto.objetivos}}</p><br>
+	
+	{# TODO lista de puestos #}
+{% endblock %}
