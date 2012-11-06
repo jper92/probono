@@ -86,7 +86,7 @@ def nuevo_proyecto(request, id_ong):
 	ong = Organizacion.objects.get(user=id_ong)
 	if request.method == 'POST':
 		form = FormularioProyecto(request.POST)
-		print form
+		#print form
 		if form.is_valid():
 			proyecto = form.save(commit = True)
 			return HttpResponseRedirect('../../../proyecto/'+str(proyecto.id))
@@ -94,9 +94,30 @@ def nuevo_proyecto(request, id_ong):
 		form = FormularioProyecto(initial={'organizacion':ong.correo})
 	return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
 
+# Perfil del proyecto
 def proyecto(request, id_proy):
 	proyecto = Proyecto.objects.get(id=id_proy)
 	return render_to_response('proyecto.html', {'proyecto':proyecto}, context_instance=RequestContext(request))
+
+# Ingreso de Puesto
+def nuevo_puesto(request, id_proy):
+	if request.method == 'POST':
+		form = FormularioPuesto(request.POST)
+		print request.POST
+		print form
+		if form.is_valid():
+			puesto = form.save()
+			return HttpResponseRedirect('../../../puesto/'+str(puesto.id))
+		else:
+			print 'NO funciona.'
+	else:
+		form = FormularioPuesto(initial={'proyecto':id_proy})
+	return render_to_response('nuevo_puesto.html', {'form':form}, context_instance=RequestContext(request))
+
+# Perfil de puesto
+def puesto(request, id_puesto):
+	puesto = Puesto.objects.get(id=id_puesto)
+	return render_to_response('puesto.html', {'puesto':puesto}, context_instance=RequestContext(request))
 
 def volunteer_profile(request, id_voluntario):
 	vol = Voluntario.objects.get(user=id_voluntario)

@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block scripts %}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+	<!--
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" />
+    <script src="{{ MEDIA_URL }}js/jquery-1.8.2.js"></script>
+    <script src="{{ MEDIA_URL }}js/jquery-ui.js"></script>
+    -->
+    <script>
+    $(function() {
+        $( "#id_fecha_limite" ).datepicker({
+            minDate: +1,
+            maxDate: '+2y',
+            dateFormat: 'dd/mm/yy',
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeYear: true,
+            changeMonth: true
+        });
+    });
+    </script>
+{% endblock %}
+
+{% block principal %}
+	<div class="hero-unit">
+		<h1>Nuevo Puesto</h1>
+		<br>
+		<form action="." method="POST">{% csrf_token %}
+			{{ form.non_field_errors }}
+			<div class="fieldWrapper" hidden=True>
+				{{ form.proyecto.errors }}
+				<label for="id_proyecto">proyecto:</label>
+				{{ form.proyecto }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.descripcion.errors }}
+				<label for="id_descripcion">Descripcion:</label>
+				{{ form.descripcion }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.costo.errors }}
+				<label for="id_costo">Costo:</label>
+				{{ form.costo }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.escolaridad.errors }}
+				<label for="id_escolaridad">Escolaridad:</label>
+				{{ form.escolaridad }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.entregables.errors }}
+				<label for="id_entregables">Entregables:</label>
+				{{ form.entregables }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.forma_trabajo.errors }}
+				<label for="id_forma_trabajo">Forma de trabajo:</label>
+				{{ form.forma_trabajo }}
+			</div>
+			
+			<div class="fieldWrapper">
+				{{ form.fecha_limite.errors }}
+				<label for="id_fecha_limite">Fecha l&iacute;mite:</label>
+				{{ form.fecha_limite }}
+			</div>
+			
+			<div>
+				{{ form.especialidades.errors }}
+				<label for="id_especialidades">Especialidades:</label>
+				{{ form.especialidades }}
+			</div>
+			<div>
+				{{ form.favoritos.errors }}
+				<label for="id_favoritos">Favoritos:</label>
+				{{ form.favoritos }}
+			</div>
+			<p><input type="submit" value="Guardar" /></p>
+		</form>
+	</div>
+{% endblock %}

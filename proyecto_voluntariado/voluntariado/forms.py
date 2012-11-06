@@ -50,6 +50,9 @@ class FormularioProyecto (forms.ModelForm):
 		#exclude = ('organizacion')
 		
 class FormularioPuesto (forms.ModelForm):
+	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), )
+	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}))
+	escolaridad = forms.ChoiceField(choices = Voluntario_choices)
 	class Meta:
 		model = Puesto
 		

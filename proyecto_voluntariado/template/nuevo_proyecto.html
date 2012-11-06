@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block principal %}
+	<div class="hero-unit">
+		<h1>Nuevo proyecto</h1>
+		<br>
+		<p>Informaci&oacute;n del Proyecto</p>
+		<form action="." method="POST">{% csrf_token %}
+			{{ form.non_field_errors }}
+			<div class="fieldWrapper">
+				{{ form.descripcion.errors }}
+				<label for="id_descripcion">Descripcion:</label>
+				{{ form.descripcion }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.objetivos.errors }}
+				<label for="id_message">Objetivos:</label>
+				{{ form.objetivos }}
+			</div>
+			<div class="fieldWrapper" hidden=True>
+				{{ form.organizacion.errors }}
+				<label for="id_message">organizacion:</label>
+				{{ form.organizacion }}
+			</div>
+			<p><input type="submit" value="Guardar" /></p>
+		</form>
+	</div>
+{% endblock %}
