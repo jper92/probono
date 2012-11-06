@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- encoding: UTF-8 -*-
+
 # Create your views here.
 import datetime
 from django.http import *
@@ -81,6 +84,7 @@ def ingreso_voluntario(request):
 		form = FormularioVoluntario()
 	return render_to_response('new_volunteer.html', {'form': form, 'interes': FormInteres(), 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
 
+
 # Ingreso de nuevo proyecto
 def nuevo_proyecto(request, id_ong):
 	ong = Organizacion.objects.get(user=id_ong)
@@ -97,7 +101,9 @@ def nuevo_proyecto(request, id_ong):
 # Perfil del proyecto
 def proyecto(request, id_proy):
 	proyecto = Proyecto.objects.get(id=id_proy)
-	return render_to_response('proyecto.html', {'proyecto':proyecto}, context_instance=RequestContext(request))
+	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+	return render_to_response('proyecto.html', {'proyecto':proyecto, 'esc':escolaridad}, context_instance=RequestContext(request))
+
 
 # Ingreso de Puesto
 def nuevo_puesto(request, id_proy):
@@ -117,7 +123,8 @@ def nuevo_puesto(request, id_proy):
 # Perfil de puesto
 def puesto(request, id_puesto):
 	puesto = Puesto.objects.get(id=id_puesto)
-	return render_to_response('puesto.html', {'puesto':puesto}, context_instance=RequestContext(request))
+	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+	return render_to_response('puesto.html', {'puesto':puesto, 'esc':escolaridad}, context_instance=RequestContext(request))
 
 def volunteer_profile(request, id_voluntario):
 	vol = Voluntario.objects.get(user=id_voluntario)

@@ -1,17 +1,58 @@
 {% extends 'index.html' %}
+{% load dictionary_extras %}
 
 {% block principal %}
-	<H2>Puestos</H2>
-	<h3>Escolaridad:</h3>
-	<p>{{puesto.escolaridad}}</p><br>
-	<h3>Costo:</h3>
-	<p>{{puesto.costo}}</p><br>
-	<h3>Entregables:</h3>
-	<p>{{puesto.escolaridad}}</p><br>
-	<h3>Descripcion:</h3>
-	<p>{{puesto.escolaridad}}</p><br>
-	<h3>Descripcion:</h3>
-	<p>{{puesto.escolaridad}}</p><br>
+<div class="container-fluid">
 	
-	{# TODO botones para solicitar participar en puesto. lista de interesados? #}
+	<div class="row-fluid">
+		<div class="span2">
+			<h2>Proyecto</h2>
+			<p><b>Organizacion:</b></h4>
+			<p>{{ puesto.proyecto.organizacion.nombre }}</p>
+			<p><b>Descripcion:</b></p>
+			<p>{{ puesto.proyecto.descripcion }}</p>
+			<p><b>Objetivos:</b></p>
+			<p>{{ puesto.proyecto.objetivos }}</p>
+		</div>
+	
+		<div class="span6">
+			<h1>Informacion</h1>
+			<table class="table table-striped">
+				<tbody>
+					<tr>
+						<th>Descripcion:</th>
+						<th>{{ puesto.descripcion }}</th>
+					</tr>
+					<tr>
+						<th>Costo:</th>
+						<th>{{ puesto.costo }}</th>
+					</tr>
+					<tr>
+						<th>Escolaridad</th>
+						<th>{{ esc|access:puesto.escolaridad }}</th>
+					</tr>
+					<tr>
+						<th>Entregables</th>
+						<th>{{ puesto.entregables }}</th>
+					</tr>
+					<tr>
+						<th>Forma de Trabajo</th>
+						<th>{{ puesto.forma_trabajo }}</th>
+					</tr>
+					<tr>
+						<th>Fecha L&iacute;mite</th>
+						<th>{{ puesto.fecha_limite }}</th>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		<div class="span4">
+			<h1>Acciones</h1>
+			{# TODO #}
+			
+		</div>
+	</div>
+	<a href="../../proyecto/{{puesto.proyecto.id}}">Regresar</a>
+</div>
 {% endblock %}

@@ -1,11 +1,42 @@
 {% extends 'index.html' %}
+{% load dictionary_extras %}
 
 {% block principal %}
-	<H2>Proyectos de <b>{{proyecto.organizacion.nombre}}</b></H2>
-	<h3>Descripcion:</h3>
-	<p>{{proyecto.descripcion}}</p><br>
-	<h3>Objetivos:</h3>
-	<p>{{proyecto.objetivos}}</p><br>
+<div class="container-fluid">
 	
-	{# TODO lista de puestos #}
+	<div class="row-fluid">
+		<div class="span2">
+			<h2>Proyecto</h2>
+			<p><b>Organizacion:</b></p>
+			<p>{{ proyecto.organizacion.nombre }}</p>
+			<p><b>Descripcion:</b></p>
+			<p>{{ proyecto.descripcion }}</p>
+			<p><b>Objetivos:</b></p>
+			<p>{{ proyecto.objetivos }}</p><br>
+		</div>
+	
+		<div class="span10">
+			<h1>Puestos</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Descripci&oacute;n</th>
+						<th>Escolaridad</th>
+						<th>Costo</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for puesto in proyecto.puesto_set.all %}
+						<tr>
+							<td><a href="../../puesto/{{puesto.id}}">{{ puesto.descripcion }}</a></td>
+							<td>{{ esc|access:puesto.escolaridad }}</td>
+							<td>{{ puesto.costo }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<a href="../../ong/{{proyecto.organizacion.user.id}}">Regresar</a>
+</div>
 {% endblock %}
