@@ -1,14 +1,15 @@
 {% extends 'index.html' %}
 
 {% block scripts %}
+	<!--
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-	<!--
+	-->
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" />
-    <script src="{{ MEDIA_URL }}js/jquery-1.8.2.js"></script>
+    <script src="{{ MEDIA_URL }}js/jquery.min.js"></script>
     <script src="{{ MEDIA_URL }}js/jquery-ui.js"></script>
-    -->
+    
     <script>
     $(function() {
         $( "#id_fecha_limite" ).datepicker({
