@@ -23,7 +23,8 @@ def requestToken():
 		raise Exception("Invalid response %s." % resp['status'])
 	request_token = dict(urlparse.parse_qsl(content))
 	authorize_url =      'https://api.linkedin.com/uas/oauth/authorize'
-	return "<input type='hidden' name='token1' value= '" + request_token['oauth_token'] + "' >\n<input type='hidden' name='token2' value='" + request_token['oauth_token_secret'] + "'>" + "<a role='button' class='btn' href='" + authorize_url + "?oauth_token=" + request_token['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='Ingrese el PIN de verificación'> <input type='submit' name='pin_submit' value='Verificar PIN'>"
+	#return "<input type='hidden' name='token1' value= '" + request_token['oauth_token'] + "' >\n<input type='hidden' name='token2' value='" + request_token['oauth_token_secret'] + "'>" + "<a role='button' class='btn' href='" + authorize_url + "?oauth_token=" + request_token['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='Ingrese el PIN de verificación'/> <button class='btn' type='button' id='pin_submit' onclick='obtener();' value='Verificar PIN' />"
+	return request_token
 	
 	#return "%s?oauth_token=%s" % (authorize_url, request_token['oauth_token'])
 	
@@ -33,16 +34,18 @@ def requestToken():
 """
 
 # Devuelve los datos de LinkedIn para el usuario por medio de los tokens y el pin de verificación
-def getAccess(pin, oauth_token, oauth_token_secret):
-	request_token = {'oauth_token': oauth_token, 'oauth_token_secret':oauth_token_secret}
+def getAccess(pin, request_token):
 	oauth_verifier = pin
 	token = oauth.Token(request_token['oauth_token'], request_token['oauth_token_secret'])
 	token.set_verifier(oauth_verifier)
 	client = oauth.Client(consumer, token)
 	resp, content = client.request(access_token_url, "POST")
 	access_token = dict(urlparse.parse_qsl(content))
-	print "    - oauth_token        = %s" % access_token['oauth_token']
-	print "    - oauth_token_secret = %s" % access_token['oauth_token_secret']
+	token = oauth.Token(
+     key=access_token['oauth_token'], 
+     secret=access_token['oauth_token_secret'])
+
+	client = oauth.Client(consumer, token)
 	resp, content = client.request(url)
 	#dom = parseString(content)
 	return content

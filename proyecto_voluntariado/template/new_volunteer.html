@@ -54,6 +54,7 @@
 	$('.errorlist').wrap('<div class="alert alert-error"></div>')
 	$('.alert.alert-error').prepend('<button type="button" class="close" data-dismiss="alert">x</button>')
 	var li_flag = false;
+	var contenido = '';
 	function linkedin(){
 		if (!li_flag){
 			li_flag = true;
@@ -63,8 +64,29 @@
 			}
 			);
 		}
+	}
+	
+	function obtener(){
+		$.ajax({
+			url: '/linkedin/',
+			type: 'POST',
+			data:{
+				pin: document.form1.pin.value,
+				csrfmiddlewaretoken: document.form1.csrfmiddlewaretoken.value
+			},
+			success: function(msg){
+				contenido = msg;
+				var xml = contenido, xmlDoc = $.parseXML( contenido ), $xml = $(xmlDoc), $title = $xml.find('title')
+				document.form1.nombres.value = $xml.find('first-name').text();
+				document.form1.apellidos.value = $xml.find('last-name').text();
+				document.form1.correo.value = $xml.find('email-address').text();
+				document.form1.nacimiento_day.value = $xml.find('day').text();
+				document.form1.nacimiento_month.value = $xml.find('month').text();
+				document.form1.nacimiento_year.value = $xml.find('year').text();
+			}
 			
-		
+		}
+		);
 	}
 </script>
 {% endblock %}

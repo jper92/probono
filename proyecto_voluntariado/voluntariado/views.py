@@ -13,7 +13,7 @@ from forms import *
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from linkedin import hola, requestToken
+from linkedin import hola, requestToken, getAccess
 
 # Estos 2 metodos indican a la view ingreso_organizacion si se trata de ONG o de empresa
 def ingreso_ong(request):
@@ -60,10 +60,6 @@ def ingreso_voluntario(request):
 				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario'}, context_instance=RequestContext(request))
 			else:
 				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario', 'error':'Error: No se pudo guardar el interes'}, context_instance=RequestContext(request))
-		
-		# Si se elige llenar datos por medio de LinkedIn
-		#elif 'pin_submit' in request.POST:
-			
 
 		# Aqui se asume que se guardara un nuevo voluntario.
 		form = FormularioVoluntario(request.POST)
@@ -224,4 +220,12 @@ def main_view(request):
 	return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
 	
 def linkedin(request):
-	return HttpResponse(requestToken())
+	if request.method == 'POST':
+		response = getAccess(request.POST['pin'], request.session['tokens'])
+		return HttpResponse(response)
+	else:
+		tokens = requestToken()
+		request.session['tokens'] = tokens
+		#request.session['tokens_secret'] = tokens['oauth_token_secret']
+		# <a role='button' class='btn' href='https://api.linkedin.com/uas/oauth/authorize/?oauth_token= + request_token['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='Ingrese el PIN de verificación'/> <button class='btn' type='button' id='pin_submit' onclick='obtener();' value='Verificar PIN' />
+		return HttpResponse("<a role='button' class='btn' href='https://api.linkedin.com/uas/oauth/authorize?oauth_token=" + tokens['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='PIN de verificación' /> <button class='btn' type='button' id='pin_submit' onclick='obtener();' value='Enviar' />")
