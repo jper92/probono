@@ -1,73 +1,85 @@
 {% extends 'index.html' %}
 
 {% block panel %}
-		<li><a href="../../">Inicio</a></li>
-		<li class="active" ><a href="../../about/">Acerca de</a></li>
-		<li><a href="../../contact/">Contáctanos</a></li>
+	<li><a href="../../">Inicio</a></li>
+	<li class="active" ><a href="../../about/">Acerca de</a></li>
+	<li><a href="../../contact/">Contáctanos</a></li>
 {% endblock %}
 
 {% block principal %}
 <div class="container-fluid">
-  <div class="row-fluid">
-	<div class="span10">
-	{% if tipo == 'voluntario' or tipo == 'empresa' %}
-		<h1>Empleos recomendados:</h1>
-		{% if lista %}
-		<table class="table table-striped">
-			<thead><tr>
-				<th>Descripci&oacute;n</th>
-			</tr></thead>
-			<tbody>
-			{% for empleo in lista %}
-			<tr>
-				<td>{{empleo.descripcion}}</td>
-			</tr>
-			{% endfor %}
-		{% else %}
-			<p>No se obtuvo ningun resultado.</p>
-		{% endif %}
-	{% endif %}
-	</div>
-	
-	<div class="span10">
-	{% if tipo == 'ong' %}
-		<h1>Voluntarios recomendados:</h1>
-		{% if lista %}
-		<table class="table table-striped">
-			<thead><tr>
-				<th>Nombres</th>
-				<th>Apellidos</th>
-			</tr></thead>
-			<tbody>
-			{% for voluntario in lista %}
-			<tr>
-				<td>{{voluntario.nombres}}</td>
-				<td>{{voluntario.apellidos}}</td>
-			</tr>
-			{% endfor %}
-		{% else %}
-			<p>No se obtuvo ningun resultado.</p>
+	<div class="row-fluid">
+		{% if tipo == 'voluntario' or tipo == 'empresa' %}
+			<div class="span10">
+				<h1>Empleos recomendados:</h1>
+				{% if lista %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Descripci&oacute;n</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for empleo in lista %}
+							<tr>
+								<td>{{empleo.descripcion}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<p>No se obtuvo ningun resultado.</p>
+				{% endif %}
+			</div>
 		{% endif %}
 		
-		<h1>Empresas recomendadas:</h1>
-		{% if lista2 %}
-		<table class="table table-striped">
-			<thead><tr>
-				<th>Nombre</th>
-				<th>Representante</th>
-			</tr></thead>
-			<tbody>
-			{% for empresa in lista2 %}
-			<tr>
-				<td>{{empresa.nombre}}</td>
-				<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
-			</tr>
-			{% endfor %}
-		{% else %}
-			<p>No se obtuvo ningun resultado.</p>
+		{% if tipo == 'puesto' %}
+			<div class="span10">
+				<h1>Voluntarios recomendados:</h1>
+				{% if lista %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Nombres</th>
+								<th>Apellidos</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for voluntario in lista %}
+							<tr>
+								<td>{{voluntario.nombres}}</td>
+								<td>{{voluntario.apellidos}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<p>No se obtuvo ningun resultado.</p>
+				{% endif %}
+		
+				<h1>Empresas recomendadas:</h1>
+				{% if lista2 %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Representante</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for empresa in lista2 %}
+							<tr>
+								<td>{{empresa.nombre}}</td>
+								<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<p>No se obtuvo ningun resultado.</p>
+				{% endif %}
+			</div>
 		{% endif %}
-	{% endif %}
 	</div>
-  </div>
 </div>
 {% endblock %}

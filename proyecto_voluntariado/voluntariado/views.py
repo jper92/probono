@@ -159,7 +159,7 @@ def match_search(request, tipo, id_req):
 		
 		lista = Puesto.objects.filter(q)
 
-	elif tipo=='ong':
+	elif tipo=='puesto':
 		especialidades = Puesto.objects.get(id=id_req).especialidades.all()
 		favoritos = Puesto.objects.get(id=id_req).favoritos.all()
 		
