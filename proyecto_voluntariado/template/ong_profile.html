@@ -2,49 +2,67 @@
 
 {% block principal %}
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span2">
-      <!--Sidebar content-->
-      <h2>{{ ong.nombre }}</h2>
-      <p>{{ ong.descripcion }}</p>
-      <p><b>Objetivos:</b><br>{{ ong.objetivos }}</p>
-    </div>
-    <div class="span10">
-      <h1>Especialidades</h1>
-      <table class="table table-striped">
-		  <thead>
-			  <tr>
-				  <th>Especialidad</th>
-				  <th>Descripción</th>
-			  </tr>
-		  </thead>
-		  <tbody>
-			{% for i in ong.especialidades.all %}
-			<tr>
-				<td>{{ i.nombre }}</td>
-				<td>{{ i.descripcion }}</td>
-			</tr>
-			{% endfor %}
-		  </tbody>
-      </table>
-      <h1>Favoritos</h1>
-      <table class="table table-striped">
-		  <thead>
-			  <tr>
-				  <th>Favorito</th>
-				  <th>Descripción</th>
-			  </tr>
-		  </thead>
-		  <tbody>
-			{% for i in ong.favoritos.all %}
-			<tr>
-				<td>{{ i.nombre }}</td>
-				<td>{{ i.descripcion }}</td>
-			</tr>
-			{% endfor %}
-		  </tbody>
-      </table>
-    </div>
-  </div>
+	<div class="row-fluid">
+		<div class="span2">
+			<h2>{{ ong.nombre }}</h2>
+			<p>{{ ong.descripcion }}</p>
+			<p><b>Objetivos:</b><br>{{ ong.objetivos }}</p>
+		</div>
+		<div class="span10">
+			<h1>Especialidades</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Especialidad</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for i in ong.especialidades.all %}
+				<tr>
+					<td>{{ i.nombre }}</td>
+					<td>{{ i.descripcion }}</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			
+			<h1>Favoritos</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Favorito</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in ong.favoritos.all %}
+					<tr>
+						<td>{{ i.nombre }}</td>
+						<td>{{ i.descripcion }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+			<h1>Proyectos</h1>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Descripci&oacute;n</th>
+						<th>Objetivos</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for p in ong.proyecto_set.all %}
+				<tr>
+					<td><a href="../../proyecto/{{p.id}}">{{ p.descripcion }}</a></td>
+					<td>{{ p.objetivos }}</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 {% endblock %}
