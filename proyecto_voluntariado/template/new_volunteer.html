@@ -1,24 +1,17 @@
 {% extends 'index.html' %}
 {% block panel %}
-<li class="active"><a href="#">Inicio</a></li>
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Información <b class="caret"></b>
-	</a>
-	<ul class="dropdown-menu">
-	<li><a href="../info/organizaciones" >Organizaciones</a></li>
-	<li><a href="../info/empresas" >Empresas</a></li>
-	<li><a href="../info/voluntarios" >Voluntarios</a></li>
-	</ul>
-</li>
-<li><a href="../contact/">Contacto</a></li>
-<li><a href="../about/">Acerca de</a></li>
+<li class="active"><a href="/main/">Inicio</a></li>
+<li><a href="/contact/">Contacto</a></li>
+<li><a href="/about/">Acerca de</a></li>
 {% endblock %}
 
 {% block principal %}
-<form name="form1" class="well form-horizontal" method="POST" action="." > {% csrf_token %}
+<form name="form1" class="well form-horizontal" method="POST" action="." enctype="multipart/form-data" > {% csrf_token %}
 	<h1>{{ title }}</h1>
+	
 	<button type="button" class="btn" id="linkedin_btn" onclick="linkedin();">Conéctate con Linked<img src="http://s3.licdn.com/scds/common/u/img/favicon_v3.ico"></button>
 	<div id="tokens"></div>
+	
 	<legend>Por favor, complete los siguientes campos</legend>
 	
 	{% if error %}
@@ -26,9 +19,13 @@
 			{{ error }}
 		</div>
 	{% endif %}
-		{{ form }}
+		{% for i in form %}
+		<div class="control-group">
+			<label class="control-label">{{i.label}}</label> <div class="controls">{{ i }} <p class="help-block">{% autoescape off %}{{i.help_text }} {% endautoescape %}</p> {{i.errors}} </div>
+		</div>
+		{% endfor %}
+		
 		<br><br>
-		<p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>
 		<div class="modal hide fade" id="nuevoInteres" tabindex = "-1" role="dialog" aria-labelledby="nuevoInteresLabel" aria-hidden="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -51,8 +48,8 @@
 
 {% block scripts %}
 <script>
-	$('.errorlist').wrap('<div class="alert alert-error"></div>')
-	$('.alert.alert-error').prepend('<button type="button" class="close" data-dismiss="alert">x</button>')
+	$('.errorlist').wrap('<div class="alert alert-error"></div>');
+	$('.alert.alert-error').prepend('<button type="button" class="close" data-dismiss="alert">x</button>');
 	var li_flag = false;
 	var contenido = '';
 	function linkedin(){

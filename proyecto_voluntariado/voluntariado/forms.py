@@ -20,8 +20,8 @@ class FormularioONG(forms.ModelForm):
 	
 	username = forms.CharField(max_length=50)
 	password = forms.CharField(max_length=50, widget = forms.PasswordInput)
-	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False).order_by('nombre'), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), )
-	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}))
+	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False).order_by('nombre'), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), help_text='Elige al menos una especialidad para seguir <p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>'  )
+	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), help_text='Elige al menos un favorito para seguir <p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>')
 	class Meta:
 		model = Organizacion
 		exclude = ('es_empresa', 'expira', 'user')
@@ -34,15 +34,16 @@ class FormularioVoluntario (forms.ModelForm):
 	
 	username = forms.CharField(max_length=50)
 	password = forms.CharField(max_length=50, widget = forms.PasswordInput)
-	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), )
-	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}))
+	especialidades = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=False), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}), help_text='Elige al menos una especialidad para seguir <p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>' )
+	favoritos = forms.ModelMultipleChoiceField(queryset = Intereses.objects.filter(es_favorito=True), widget = forms.CheckboxSelectMultiple(attrs={'class':'checkbox'}) , help_text='Elige al menos un favorito para seguir <p><strong>¿No encuentras tus intereses? </strong><a role="button" class="btn" data-toggle="modal" href="#nuevoInteres"> Añádelos!</a></p>')
 	sexo = forms.TypedChoiceField(coerce=lambda x: True if x=='True' else False,
-									choices =((False,'Femenino'), (True,'Masculino')), widget = forms.RadioSelect)
+									choices =((False,'Femenino'), (True,'Masculino')), widget = forms.RadioSelect(attrs={'class':'radio'}))
 	escolaridad = forms.ChoiceField(choices = Voluntario_choices)
 	class Meta:
 		model = Voluntario
-		exclude = ('user')
-		widgets = { 'nacimiento': SelectDateWidget(years=range(datetime.datetime.now().year-50, datetime.datetime.now().year-9)), }
+		exclude = ('user','puntos', 'evaluacion')
+		widgets = { 'nacimiento': SelectDateWidget(years=range(datetime.datetime.now().year-50, datetime.datetime.now().year-9)), 
+					'foto': forms.FileInput(attrs={'class': 'input-file'}), }
 		
 class FormularioProyecto (forms.ModelForm):
 	class Meta:
