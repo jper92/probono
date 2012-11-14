@@ -17,4 +17,5 @@ urlpatterns = patterns('voluntariado.views',
 	url(r'^puesto/(\d+)/$', 'puesto'),
 	url(r'^(puesto)/(\d+)/buscar_voluntarios/$', 'match_search'),
 	url(r'^linkedin/$','linkedin'),
+	url(r'^home/$','home'),
 )
