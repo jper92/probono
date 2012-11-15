@@ -257,7 +257,19 @@ def home_ong(request):
 		return redirect('/main/')
 	
 def home_empresa(request):
-	pass
+	if request.user.is_authenticated():
+		try:
+			ong = Organizacion.objects.get(user=request.user)
+			if ong.es_empresa:
+				return render_to_response('home_ong.html',{'ong': ong,}, context_instance=RequestContext(request))
+			else:
+				return redirect('/main/')
+			#return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user,}, context_instance=RequestContext(request))
+		except:
+			return redirect('/main/')
+	else:
+		return redirect('/main/')
+
 	
 def logout_view(request):
 	logout(request)
