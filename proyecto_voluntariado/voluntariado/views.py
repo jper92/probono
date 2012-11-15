@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- encoding: UTF-8 -*-
 
-
 import datetime
 from django.http import *
 from django.shortcuts import render_to_response,redirect
@@ -15,17 +14,23 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from linkedin import hola, requestToken, getAccess
 
+
+# Vistas básicas
+def about(request):
+	return render_to_response('about.html',{}, context_instance=RequestContext(request))
+def contact_us(request):
+	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
+
+
 # Estos 2 metodos indican a la view ingreso_organizacion si se trata de ONG o de empresa
 def ingreso_ong(request):
 	return ingreso_organizacion(request, True)
 def ingreso_empresa(request):
 	return ingreso_organizacion(request, False)
 
-#  
+
 #  name: ingreso_organizacion
 #  @param request, es_ong: bool
-#  
-
 def ingreso_organizacion(request, es_ong):
 
 	if request.method == 'POST':	# Intenta crear un usuario, si algo no es validado se eliminan todos los cambios
@@ -60,6 +65,12 @@ def ingreso_organizacion(request, es_ong):
 	else:
 		form = FormularioONG()
 	return render_to_response('new_org.html', {'form': form, 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
+
+
+# Perfil de ong
+def ong_profile(request, id_ong):
+	ong = Organizacion.objects.get(user=id_ong)
+	return render_to_response('ong_profile.html', {'ong':ong }, context_instance=RequestContext(request))
 
 
 # Vista ingreso voluntario
@@ -97,7 +108,12 @@ def ingreso_voluntario(request):
 		form = FormularioVoluntario()
 	return render_to_response('new_volunteer.html', {'form': form, 'interes': FormInteres(), 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
 
-		
+
+# Perfil de voluntario
+def volunteer_profile(request, id_voluntario):
+	vol = Voluntario.objects.get(user=id_voluntario)
+	return render_to_response('volunteer_profile.html', {'vol': vol, 'current': datetime.datetime.now().year - vol.nacimiento.year }, context_instance=RequestContext(request))
+
 
 # Ingreso de nuevo proyecto
 def nuevo_proyecto(request, id_ong):
@@ -112,6 +128,7 @@ def nuevo_proyecto(request, id_ong):
 		form = FormularioProyecto(initial={'organizacion':ong.correo})
 	return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
 
+
 # Perfil del proyecto
 def proyecto(request, id_proy):
 	proyecto = Proyecto.objects.get(id=id_proy)
@@ -123,16 +140,13 @@ def proyecto(request, id_proy):
 def nuevo_puesto(request, id_proy):
 	if request.method == 'POST':
 		form = FormularioPuesto(request.POST)
-		#print request.POST
-		#print form
 		if form.is_valid():
 			puesto = form.save()
 			return HttpResponseRedirect('../../../puesto/'+str(puesto.id))
-		else:
-			print 'NO funciona.'
 	else:
 		form = FormularioPuesto(initial={'proyecto':id_proy})
 	return render_to_response('nuevo_puesto.html', {'form':form}, context_instance=RequestContext(request))
+
 
 # Perfil de puesto
 def puesto(request, id_puesto):
@@ -140,21 +154,8 @@ def puesto(request, id_puesto):
 	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
 	return render_to_response('puesto.html', {'puesto':puesto, 'esc':escolaridad}, context_instance=RequestContext(request))
 
-def volunteer_profile(request, id_voluntario):
-	vol = Voluntario.objects.get(user=id_voluntario)
-	return render_to_response('volunteer_profile.html', {'vol': vol, 'current': datetime.datetime.now().year - vol.nacimiento.year }, context_instance=RequestContext(request))
 
-def ong_profile(request, id_ong):
-	ong = Organizacion.objects.get(user=id_ong)
-	return render_to_response('ong_profile.html', {'ong':ong }, context_instance=RequestContext(request))
-
-def about(request):
-	return render_to_response('about.html',{}, context_instance=RequestContext(request))
-	
-def contact_us(request):
-	return render_to_response('contact.html',{}, context_instance=RequestContext(request))
-
-###@login_required
+# Motor de búsquedas
 def match_search(request, tipo, id_req):
 	lista=[]
 	lista2=[]
@@ -190,9 +191,9 @@ def match_search(request, tipo, id_req):
 		lista = Voluntario.objects.filter(q)
 		q.add(Q(es_empresa=True),Q.AND)
 		lista2 = Organizacion.objects.filter(q)
-		#print lista
-		#print lista2
+		
 	return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
+
 
 # vista de voluntario desde puesto
 def puesto_voluntario2(request, id_puesto, id_vol):
@@ -215,6 +216,7 @@ def puesto_voluntario2(request, id_puesto, id_vol):
 			form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
 		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
 
+
 # Vista de empresa desde puesto
 def puesto_empresa(request, id_puesto, id_vol):
 	pue = Puesto.objects.get(id=id_puesto)
@@ -234,6 +236,7 @@ def puesto_empresa(request, id_puesto, id_vol):
 		else:
 			form = FormularioEmpresaAplicando(initial={'empresa':emp.correo, 'puesto':pue.id, 'status':1})
 		return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'form':form}, context_instance=RequestContext(request))
+
 
 # Vista principal del proyecto, controla a dónde se redirige según el tipo de usuario.
 def main_view(request):
@@ -261,6 +264,7 @@ def main_view(request):
 		return render_to_response('main.html',{}, context_instance=RequestContext(request))
 	
 
+# Manejo de ingreso con LinkedIn
 def linkedin(request):
 	if request.method == 'POST':
 		response = getAccess(request.POST['pin'], request.session['tokens'])
@@ -271,6 +275,7 @@ def linkedin(request):
 		return HttpResponse("<a role='button' class='btn' href='https://api.linkedin.com/uas/oauth/authorize?oauth_token=" + tokens['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='PIN de verificación' /> <button class='btn' type='button' id='pin_submit' onclick='obtener();'>Enviar</button>")
 
 
+# Vista de voluntario
 def home_voluntario(request):
 	if request.user.is_authenticated():
 		try:
@@ -281,7 +286,9 @@ def home_voluntario(request):
 			return redirect('/main/')
 	else:
 		return redirect('/main/')
-	
+
+
+# Vista ONG
 def home_ong(request):
 	if request.user.is_authenticated():
 		try:
@@ -295,7 +302,9 @@ def home_ong(request):
 			return redirect('/main/')
 	else:
 		return redirect('/main/')
-	
+
+
+# Vista Empresa	
 def home_empresa(request):
 	if request.user.is_authenticated():
 		try:
@@ -310,11 +319,13 @@ def home_empresa(request):
 	else:
 		return redirect('/main/')
 
-	
+
+# Logout
 def logout_view(request):
 	logout(request)
 	return redirect('/main/')
 
+# Edición de voluntario
 def edit_volunteer(request):
 	if request.user.is_authenticated():
 		if request.method=='POST':
@@ -338,6 +349,7 @@ def edit_volunteer(request):
 		return redirect('/main')
 
 
+# Edición de empresa
 def edit_ong(request):
 	if request.user.is_authenticated():
 		if request.method=='POST':
@@ -359,6 +371,7 @@ def edit_ong(request):
 			return redirect('/main/')
 	else:
 		return redirect('/main')
+
 
 # Voluntario quiere buscar/consultar un puesto dado ya sea para observarlo o pedir aceptación
 def puesto_voluntario(request, puesto):
@@ -429,6 +442,7 @@ def puesto_voluntario(request, puesto):
 	else:
 		# No está autenticado
 		return redirect('/main/')
+
 
 def voluntario_ong(request):
 	pass

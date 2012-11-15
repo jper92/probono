@@ -61,7 +61,7 @@
 				{{ voluntario.nombres|pvs:status.status}}
 			{% else %}
 				<p>{{ voluntario.nombres }} no est&aacute; relacionado con el puesto.
-				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute; en el proyecto?</p>
+				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute;n en el proyecto?</p>
 				<form action="." method="POST">{% csrf_token %}
 					{{ form.non_field_errors }}
 					<div>

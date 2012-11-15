@@ -13,7 +13,7 @@ def pvs(voluntario, value):
 	if value == 0:
 		return voluntario+' está esparando su aprobación para participar en el proyecto.'
 	elif value == 1:
-		return 'Esperando a que '+voluntario+' aceptejar en este proyecto.'
+		return 'Esperando a que '+voluntario+' acepte trabajar en este proyecto.'
 	elif value == 2:
 		return voluntario+' está actualmente trabajando en el proyecto.'
 	elif value == 3:

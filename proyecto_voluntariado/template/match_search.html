@@ -2,8 +2,10 @@
 
 {% block panel %}
 	<li><a href="/main/">Inicio</a></li>
-	<li class="active" ><a href="/about/">Acerca de</a></li>
+	<li><a href="/about/">Acerca de</a></li>
 	<li><a href="/contact/">Contáctanos</a></li>
+	<li><p>{{vol.nombre}}</p></li>
+	<li><a href="/logout/">Cerrar sesión</a></li>
 {% endblock %}
 
 {% block principal %}
@@ -11,7 +13,13 @@
 	<div class="row-fluid">
 		{% if tipo == 'voluntario' or tipo == 'empresa' %}
 			<div class="span2">
-				{# TODO informaciom empresa/voluntario#}
+				{% if tipo == 'voluntario' %}
+					<img src="{{MEDIA_URL}}{{obj.foto}}" width="100px;"/>
+					<h2>{{ obj.nombres }}, {{obj.apellidos}}</h2>
+					<a href="/editarvoluntario/">Editar perfil</a>
+				{% else %}
+					empresa
+				{% endif %}
 			</div>
 			<div class="span10">
 				<h1>Empleos recomendados:</h1>
@@ -33,8 +41,9 @@
 				{% else %}
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
+			
+			<input value="Regresar" onClick="location.href='/main/'" type="button" class="btn btn-primary">
 			</div>
-			<input value="Regresar" onClick="location.href='..'" type="button" class="btn btn-primary">
 		{% endif %}
 		
 		{% if tipo == 'puesto' %}
@@ -93,8 +102,9 @@
 				{% else %}
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
+			
+			<input value="Regresar" onClick="location.href='/main/'" type="button" class="btn btn-primary">
 			</div>
-			<input value="Regresar" onClick="location.href='..'" type="button" class="btn btn-primary">
 		{% endif %}
 	</div>
 </div>
