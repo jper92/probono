@@ -94,3 +94,7 @@ class FormularioEditarONG(forms.ModelForm):
 class FormularioVoluntarioAplicando(forms.ModelForm):
 	class Meta:
 		model = VoluntariosAplicando
+
+class FormularioEmpresaAplicando(forms.ModelForm):
+	class Meta:
+		model = EmpresasAplicando

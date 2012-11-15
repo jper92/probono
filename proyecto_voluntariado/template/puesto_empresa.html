@@ -16,8 +16,8 @@
 		<div class="span6">
 			<h1>Busquedas para puesto <u>{{obj.descripcion}}</u></h1><br>
 			
-			<h2>Voluntario: {{ voluntario.nombres }} {{voluntario.apellidos}}</h2>
-			<img src="{{MEDIA_URL}}{{voluntario.foto}}" width="100px;"/><br>
+			<h2>Empresa: {{ empresa.nombre }}</h2>
+			<img src="{{MEDIA_URL}}{{empresa.logo}}" width="100px;"/><br>
 			
 			<table class="table table-striped">
 				<thead>
@@ -25,32 +25,32 @@
 				</thead>
 				<tbody>
 					<tr>
-						<th>Fecha de Nacimiento</th>
-						<th>{{ voluntario.nacimiento }}</th>
+						<th>Descripci&oacute;n</th>
+						<th>{{ empresa.descripcion }}</th>
 					</tr>
 					<tr>
-						<th>Sexo</th>
-						<th>{% if voluntario.sexo %} Masculino {% else %} Femenino {% endif %}</th>
+						<th>Objetivos</th>
+						<th>{{ empresa.objetivos }}</th>
 					</tr>
 					<tr>
-						<th>Escolaridad</th>
-						<th>{{ esc|access:voluntario.escolaridad }}</th>
+						<th>Representante</th>
+						<th>{{ empresa.nombre_representante }}, {{empresa.apellido_representante}}</th>
 					</tr>
 					<tr>
-						<th>Titulo</th>
-						<th>{{ voluntario.titulo }}</th>
+						<th>P&aacute;gina Web</th>
+						<th>{{ empresa.pagina_web }}</th>
 					</tr>
 					<tr>
 						<th>Tel&eacute;fono</th>
-						<th>{{ voluntario.telefono }}</th>
+						<th>{{ empresa.telefono }}</th>
 					</tr>
 					<tr>
 						<th>Direcci&oacute;n</th>
-						<th>{{ voluntario.direccion }}</th>
+						<th>{{ empresa.direccion }}</th>
 					</tr>
 					<tr>
 						<th>Correo</th>
-						<th>{{ voluntario.correo }}</th>
+						<th>{{ empresa.correo }}</th>
 					</tr>
 				</tbody>
 			</table>
@@ -58,10 +58,10 @@
 		<div class="span4">
 			<h2>Relaci&oacute;n con el puesto</h2>
 			{% if status %}
-				{{ voluntario.nombres|pvs:status.status}}
+				{{ empresa.nombre|pvs:status.status}}
 			{% else %}
-				<p>{{ voluntario.nombres }} no est&aacute; relacionado con el puesto.
-				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute; en el proyecto?</p>
+				<p>{{ empresa.nombre }} no est&aacute; relacionada con el puesto.
+				¿Desea solicitar a {{ empresa.nombre }} su participaci&oacute; en el proyecto?</p>
 				<form action="." method="POST">{% csrf_token %}
 					{{ form.non_field_errors }}
 					<div>
@@ -70,7 +70,7 @@
 						{{ form.mensaje }}
 					</div>
 					<div hidden=true>
-						{{ form.voluntario }}
+						{{ form.empresa }}
 						{{ form.puesto }}
 						{{ form.status }}
 					</div>

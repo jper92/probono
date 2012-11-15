@@ -214,7 +214,27 @@ def puesto_voluntario2(request, id_puesto, id_vol):
 		else:
 			form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
 		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
-	
+
+# Vista de empresa desde puesto
+def puesto_empresa(request, id_puesto, id_vol):
+	pue = Puesto.objects.get(id=id_puesto)
+	emp = Organizacion.objects.get(user=id_vol)
+	try:
+		empap = EmpresasAplicando.objects.get(puesto=pue, empresa=emp)
+	except:
+		empap = None
+	if empap:
+		return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'status':empap}, context_instance=RequestContext(request))
+	else:
+		if request.method == 'POST':
+			form = FormularioEmpresaAplicando(request.POST)
+			if form.is_valid():
+				puesto = form.save()
+				return HttpResponseRedirect('')
+		else:
+			form = FormularioEmpresaAplicando(initial={'empresa':emp.correo, 'puesto':pue.id, 'status':1})
+		return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'form':form}, context_instance=RequestContext(request))
+
 # Vista principal del proyecto, controla a dónde se redirige según el tipo de usuario.
 def main_view(request):
 	if request.method == 'POST':
