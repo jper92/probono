@@ -49,21 +49,24 @@
 		</div>
 		<div class="span4">
 			<h1>Acciones</h1>
-			{% if relacionado %}
-			<a href="#agregar" class="btn" role="button" data-toggle="modal">Cancelar</a>
-			<div class="modal hide fade" id="salir" tabindex = "-1" role="dialog" aria-labelledby="nuevoInteresLabel" aria-hidden="true">
+			{% if not relacionado %}
+			<a href="#agregar" class="btn" role="button" data-toggle="modal">Agregar este puesto</a>
+			
+			<div class="modal hide fade" id="agregar" tabindex = "-1" role="dialog" aria-labelledby="agregarLabel" aria-hidden="true">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h3 id="myModalLabel">Agregar puesto</h3>
 				</div>
-				<div class="modal-body">
-					<form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
-					<legend>Agrega un mensaje</legend> <small>(Opcional)</small>
-					<textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje..." />
-					<button type="submit" class="btn btn-primary">Enviar</button>
-					<button data-dismiss="modal" class="btn btn-primary" aria-hidden="true">Cancelar</button>
-					</form>
-				</div>
+				<form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
+					<div class="modal-body">
+						<legend>Agrega un mensaje</legend>
+						<textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje">Mensaje</textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Enviar</button>
+						<button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
+					</div>
+				</form>
 			</div>
 			{% endif %}
 			

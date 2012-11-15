@@ -261,7 +261,7 @@ def home_empresa(request):
 		try:
 			ong = Organizacion.objects.get(user=request.user)
 			if ong.es_empresa:
-				return render_to_response('home_ong.html',{'ong': ong,}, context_instance=RequestContext(request))
+				return render_to_response('home_empresa.html',{'ong': ong,}, context_instance=RequestContext(request))
 			else:
 				return redirect('/main/')
 			#return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user,}, context_instance=RequestContext(request))

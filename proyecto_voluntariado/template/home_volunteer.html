@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block panel %}
-<li class="active"><a href="#">Inicio</a></li>
+<li class="active"><a href="/main/">Inicio</a></li>
 <li class="dropdown">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buscar<b class="caret"></b>
 	</a>
@@ -49,7 +49,7 @@
 				  {% endfor %}
 			  </tbody>
 		  </table>
-			<a>Encuentra proyectos</a>
+			<a href="/voluntario/{{vol.user.id}}/buscar_empleo/">Encuentra proyectos</a>
 		</div>
       <h2>Especialidades</h2>
       <table class="table table-striped">

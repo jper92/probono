@@ -1,9 +1,9 @@
 {% extends 'index.html' %}
 
 {% block panel %}
-	<li><a href="../../">Inicio</a></li>
-	<li class="active" ><a href="../../about/">Acerca de</a></li>
-	<li><a href="../../contact/">Contáctanos</a></li>
+	<li><a href="/main/">Inicio</a></li>
+	<li class="active" ><a href="/about/">Acerca de</a></li>
+	<li><a href="/contact/">Contáctanos</a></li>
 {% endblock %}
 
 {% block principal %}
@@ -25,7 +25,7 @@
 						<tbody>
 							{% for empleo in lista %}
 							<tr>
-								<td><a href="../../../puesto/{{empleo.id}}">{{empleo.descripcion}}</a></td>
+								<td><a href="/mispuestos/{{empleo.id}}">{{empleo.descripcion}}</a></td>
 							</tr>
 							{% endfor %}
 						</tbody>
