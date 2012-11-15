@@ -391,5 +391,3 @@ def puesto_voluntario(request, puesto):
 		return redirect('/main/')
 
 
-def voluntario_ong(request):
-	pass
