@@ -1,6 +1,13 @@
 {% extends 'index.html' %}
 {% load dictionary_extras %}
 
+{% block panel %}
+	<li><a href="/main/">Inicio</a></li>
+	<li><a href="/about/">Acerca de</a></li>
+	<li><a href="/contact/">Contáctanos</a></li>
+	<li><p>{{vol.nombres}}</p></li>
+	<li><a href="/logout/">Cerrar sesión</a></li>
+{% endblock %}
 
 {% block principal %}
 <div class="container-fluid">

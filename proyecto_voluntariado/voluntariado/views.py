@@ -116,18 +116,20 @@ def volunteer_profile(request, id_voluntario):
 
 
 # Ingreso de nuevo proyecto
-def nuevo_proyecto(request, id_ong):
-	ong = Organizacion.objects.get(user=id_ong)
-	if request.method == 'POST':
-		form = FormularioProyecto(request.POST)
-		#print form
-		if form.is_valid():
-			proyecto = form.save(commit = True)
-			return HttpResponseRedirect('../../../proyecto/'+str(proyecto.id))
+def nuevo_proyecto(request):
+	if request.user.is_authenticated():
+		ong = Organizacion.objects.get(user=request.user)
+		if request.method == 'POST':
+			form = FormularioProyecto(request.POST)
+			#print form
+			if form.is_valid():
+				proyecto = form.save(commit = True)
+				return HttpResponseRedirect('/home/ong/'+str(proyecto.id))
+		else:
+			form = FormularioProyecto(initial={'organizacion':ong.correo})
+		return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
 	else:
-		form = FormularioProyecto(initial={'organizacion':ong.correo})
-	return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
-
+		return redirect('/main/')
 
 # Perfil del proyecto
 def proyecto(request, id_proy):
@@ -170,7 +172,6 @@ def busqueda_vol(request):
 		lista = Puesto.objects.filter(q)
 		return render_to_response('match_search.html',{'tipo':'voluntario','obj':vol,'lista':lista}, context_instance=RequestContext(request))
 	else:
-		print 'por queeeee'
 		return redirect('/main/')
 
 def match_search(request, tipo, id_req):
@@ -408,7 +409,7 @@ def puesto_voluntario(request, puesto):
 					return render_to_response('/main/')
 				except:
 					# Hubo un error
-					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'vol':vol, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
 			except:
 				try:
 					e = Empresa.objects.get(user=request.user)

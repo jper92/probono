@@ -8,8 +8,7 @@ urlpatterns = patterns('voluntariado.views',
 	#url(r'^voluntario/(\d+)/$', 'volunteer_profile'), changed to busqueda_vol
 	url(r'^empresa/(\d+)/$', 'ong_profile'), #TODO perfil de empresa
 	url(r'^(empresa)/(\d+)/buscar_empleo/$', 'match_search'),
-	url(r'^ong/(\d+)/$', 'ong_profile'),
-	url(r'^ong/(\d+)/nuevoproyecto/$', 'nuevo_proyecto'),
+	#url(r'^ong/(\d+)/$', 'ong_profile'),
 	url(r'^proyecto/(\d+)/$', 'proyecto'),
 	url(r'^proyecto/(\d+)/nuevopuesto/$', 'nuevo_puesto'),
 	url(r'^puesto/(\d+)/$', 'puesto'),
@@ -24,6 +23,7 @@ urlpatterns = patterns('voluntariado.views',
 	
 	# ONG
 	url(r'^home/ong/$','home_ong'),
+	url(r'^home/ong/nuevoproyecto/$', 'nuevo_proyecto'),
 	
 	# Empresa
 	url(r'^home/empresa/$','home_empresa'),
@@ -37,8 +37,6 @@ urlpatterns = patterns('voluntariado.views',
 	# agregar empresa desde puesto
 	url(r'^puesto/(\d+)/empresa/(\d+)/$', 'puesto_empresa'),
 
-	#caso de uso: voluntario/empresa quiere agregar/ver un empleo
-	url(r'^mispuestos/(\d+)/$', 'puesto_voluntario'),
 	#caso de uso: ong quiere agregar/ver a voluntario para puesto
 	url(r'^misvoluntarios/(\d+)/$', 'voluntario_ong'),
 )

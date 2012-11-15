@@ -1,6 +1,14 @@
 {% extends 'index.html' %}
 {% load dictionary_extras %}
 
+{% block panel %}
+	<li class="active"><a href="/main/">Inicio</a></li>
+	<li><a href="/about/">Acerca de</a></li>
+	<li><a href="/contact/">Contáctanos</a></li>
+	<li><p>{{proyecto.organizacion.nombre}}</p></li>
+	<li><a href="/logout/">Cerrar sesión</a></li>
+{% endblock %}
+
 {% block principal %}
 <div class="container-fluid">
 	
@@ -36,8 +44,9 @@
 				</tbody>
 			</table>
 			<input value="Agregar puesto" onClick="location.href='nuevopuesto'" type="button" class="btn btn-primary">
+			<br><br><br>
+			<input value="Regresar" onClick="location.href='/home/ong/'" type="button" class="btn btn-primary">
 		</div>
 	</div>
-	<input value="Regresar" onClick="location.href='/ong/{{proyecto.organizacion.user.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}

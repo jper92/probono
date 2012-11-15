@@ -4,7 +4,12 @@
 	<li><a href="/main/">Inicio</a></li>
 	<li><a href="/about/">Acerca de</a></li>
 	<li><a href="/contact/">Contáctanos</a></li>
-	<li><p>{{vol.nombre}}</p></li>
+	{% if tipo == 'voluntario' %}
+	<li><p>{{obj.nombres}}</p></li>
+	{% endif %}
+	{% if tipo == 'puesto' %}
+	<li><p>{{obj.proyecto.organizacion.nombre }}</p></li>
+	{% endif %}
 	<li><a href="/logout/">Cerrar sesión</a></li>
 {% endblock %}
 
@@ -102,8 +107,12 @@
 				{% else %}
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
-			
+			{% if tipo == 'voluntario' %}
 			<input value="Regresar" onClick="location.href='/main/'" type="button" class="btn btn-primary">
+			{% endif %}
+			{% if tipo == 'puesto' %}
+			<input value="Regresar" onClick="location.href='..'" type="button" class="btn btn-primary">
+			{% endif %}
 			</div>
 		{% endif %}
 	</div>

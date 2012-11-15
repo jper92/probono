@@ -25,6 +25,14 @@
     </script>
 {% endblock %}
 
+{% block panel %}
+	<li class="active"><a href="/main/">Inicio</a></li>
+	<li><a href="/about/">Acerca de</a></li>
+	<li><a href="/contact/">Contáctanos</a></li>
+	<li><p>{{ong.nombre}}</p></li>
+	<li><a href="/logout/">Cerrar sesión</a></li>
+{% endblock %}
+
 {% block principal %}
 	<div class="hero-unit">
 		<h2>Ingreso de nuevo puesto</h2><br>
