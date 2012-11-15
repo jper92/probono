@@ -24,6 +24,9 @@
 			<label class="control-label">{{i.label}}</label> <div class="controls">{{ i }} <p class="help-block">{% autoescape off %}{{i.help_text }} {% endautoescape %}</p> {{i.errors}} </div>
 		</div>
 		{% endfor %}
+		<div id="div_pass" class="control-group">
+			<label class="control-label">Reescriba su contraseña</label> <div class="controls"><input type="password" id="verif_pass"/> <p id="help_pass" class="help-block"></p></div>
+		</div>
 		
 		<br><br>
 		<div class="modal hide fade" id="nuevoInteres" tabindex = "-1" role="dialog" aria-labelledby="nuevoInteresLabel" aria-hidden="true">
