@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- encoding: UTF-8 -*-
 
-# Create your views here.
+
 import datetime
 from django.http import *
 from django.shortcuts import render_to_response,redirect
@@ -27,7 +27,7 @@ def ingreso_empresa(request):
 #  
 
 def ingreso_organizacion(request, es_ong):
-	if request.method == 'POST':
+	"""	if request.method == 'POST':
 		form = FormularioONG(request.POST)
 		try:
 			user = User.objects.get(username=form['username'].value())
@@ -41,12 +41,44 @@ def ingreso_organizacion(request, es_ong):
 				return redirect('/ong/' + str(org.user_id))
 			else:
 				user.delete()
-				return render_to_response('new_volunteer.html',{'form':form}, context_instance=RequestContext(request))
-		return render_to_response('new_volunteer.html',{'form':form, 'error': form['username'].value() + ' already exists', 'title': 'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
+				return render_to_response('new_org.html',{'form':form}, context_instance=RequestContext(request))
+		return render_to_response('new_org.html',{'form':form, 'error': form['username'].value() + ' already exists', 'title': 'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
 	else:
 		form = FormularioONG()
 	return render_to_response('new_volunteer.html', {'form': form, 'title': 'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
+	"""
 
+	if request.method == 'POST':	# Intenta crear un usuario, si algo no es validado se eliminan todos los cambios
+		# Si se elige agregar un nuevo interes
+		if 'nuevointeres' in request.POST:
+			form = FormInteres(request.POST)
+			if form.is_valid():
+				form.save()
+				return render_to_response('new_org.html', {'form': FormularioONG(request.POST), 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
+			else:
+				return render_to_response('new_org.html', {'form': FormularioONG(request.POST),'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa', 'error':'Error: No se pudo guardar el interes'}, context_instance=RequestContext(request))
+
+		# Aquí se asume que se guardara una nueva organización.
+		form = FormularioONG(request.POST)
+		try:
+			user = User.objects.get(username=form['username'].value())
+		# si hubo error, no existe el usuario y se tiene libertad de crearlo
+		except:
+			user = User.objects.create_user(form['username'].value(), form['correo'].value(), form['password'].value())
+			org = Organizacion(user = user, es_empresa = not es_ong, expira = datetime.datetime.now() + datetime.timedelta(days=30))
+			form = FormularioONG(request.POST, request.FILES, instance = org)
+			if form.is_valid():
+				interesado = form.save()
+				#return redirect('/voluntario/' + str(vol.user_id))
+				return redirect('/home/')
+			else:
+				user.delete()
+				return render_to_response('new_org.html',{'form':form, 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa', 'error': 'Error. No se pudo crear el usuario'}, context_instance=RequestContext(request))
+		# si no hubo error, el usuario ya existe, por lo que no se le permite agregarlo
+		return render_to_response('new_org.html',{'form':form, 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa', 'error': form['username'].value() + ' ya existe'}, context_instance=RequestContext(request))
+	else:
+		form = FormularioONG()
+	return render_to_response('new_org.html', {'form': form, 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
 
 
 # Vista ingreso voluntario
@@ -65,21 +97,25 @@ def ingreso_voluntario(request):
 		form = FormularioVoluntario(request.POST)
 		try:
 			user = User.objects.get(username=form['username'].value())
+		# si hubo error, no existe el usuario y se tiene libertad de crearlo
 		except:
 			user = User.objects.create_user(form['username'].value(), form['correo'].value(), form['password'].value())
-			vol = Voluntario(user = user)
-			form = FormularioVoluntario(request.POST, instance = vol)
+			vol = Voluntario(user = user, evaluacion = 0, puntos = 0)
+			form = FormularioVoluntario(request.POST, request.FILES, instance = vol)
 			if form.is_valid():
 				interesado = form.save()
-				return redirect('/voluntario/' + str(vol.user_id))
+				#return redirect('/voluntario/' + str(vol.user_id))
+				return redirect('/home/')
 			else:
 				user.delete()
-				return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), }, context_instance=RequestContext(request))
-		return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), 'title':'Nuevo voluntario', 'error': form['username'].value() + ' already exists'}, context_instance=RequestContext(request))
+				return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), 'title':'Nuevo voluntario', 'error': 'Error, no se pudo crear el usuario'}, context_instance=RequestContext(request))
+		# si no hubo error, el usuario ya existe, por lo que no se le permite agregarlo
+		return render_to_response('new_volunteer.html',{'form':form, 'interes': FormInteres(), 'title':'Nuevo voluntario', 'error': form['username'].value() + ' ya existe'}, context_instance=RequestContext(request))
 	else:
 		form = FormularioVoluntario()
 	return render_to_response('new_volunteer.html', {'form': form, 'interes': FormInteres(), 'title':'Nuevo voluntario'}, context_instance=RequestContext(request))
 
+		
 
 # Ingreso de nuevo proyecto
 def nuevo_proyecto(request, id_ong):
@@ -221,6 +257,7 @@ def main_view(request):
 		vol = Voluntario.objects.get(user=request.user)
 	return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user, 'log': request.user.is_authenticated()}, context_instance=RequestContext(request))
 	
+
 def linkedin(request):
 	if request.method == 'POST':
 		response = getAccess(request.POST['pin'], request.session['tokens'])
@@ -228,6 +265,4 @@ def linkedin(request):
 	else:
 		tokens = requestToken()
 		request.session['tokens'] = tokens
-		#request.session['tokens_secret'] = tokens['oauth_token_secret']
-		# <a role='button' class='btn' href='https://api.linkedin.com/uas/oauth/authorize/?oauth_token= + request_token['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='Ingrese el PIN de verificación'/> <button class='btn' type='button' id='pin_submit' onclick='obtener();' value='Verificar PIN' />
 		return HttpResponse("<a role='button' class='btn' href='https://api.linkedin.com/uas/oauth/authorize?oauth_token=" + tokens['oauth_token'] + "' target='_blank'>Ir a LinkedIn</a><input type='text' name='pin' placeholder='PIN de verificación' /> <button class='btn' type='button' id='pin_submit' onclick='obtener();' value='Enviar' />")
