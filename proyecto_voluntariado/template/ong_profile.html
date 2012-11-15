@@ -45,6 +45,7 @@
 				</tbody>
 			</table>
 			<br>
+			{% if not ong.es_empresa %}
 			<h1>Proyectos</h1>
 			<table class="table table-striped">
 				<thead>
@@ -56,13 +57,14 @@
 				<tbody>
 				{% for p in ong.proyecto_set.all %}
 				<tr>
-					<td><a href="../../proyecto/{{p.id}}">{{ p.descripcion }}</a></td>
+					<td><a href="/proyecto/{{p.id}}">{{ p.descripcion }}</a></td>
 					<td>{{ p.objetivos }}</td>
 				</tr>
 				{% endfor %}
 				</tbody>
 			</table>
 			<input value="Agregar proyecto" onClick="location.href='nuevoproyecto'" type="button" class="btn btn-primary">
+			{% endif %}
 		</div>
 	</div>
 </div>

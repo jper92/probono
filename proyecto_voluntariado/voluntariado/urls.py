@@ -22,4 +22,5 @@ urlpatterns = patterns('voluntariado.views',
 	url(r'^logout/$','logout_view'),
 	url(r'^editarvoluntario/$','edit_volunteer'),
 	url(r'^editarong/$','edit_ong'),
+	url(r'^puesto/(\d+)/voluntario/(\d+)/$', 'puesto_voluntario'),
 )

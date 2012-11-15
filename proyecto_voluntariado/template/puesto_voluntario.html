@@ -1,0 +1,84 @@
+{% extends 'index.html' %}
+{% load dictionary_extras %}
+
+{% block principal %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<h2>Proyecto</h2>
+			<p><b>Organizacion:</b></h4>
+			<p>{{ puesto.proyecto.organizacion.nombre }}</p>
+			<p><b>Descripcion:</b></p>
+			<p>{{ puesto.proyecto.descripcion }}</p>
+			<p><b>Objetivos:</b></p>
+			<p>{{ puesto.proyecto.objetivos }}</p>
+		</div>
+		<div class="span6">
+			<h1>Busquedas para puesto <u>{{obj.descripcion}}</u></h1><br>
+			
+			<h2>Voluntario: {{ voluntario.nombres }} {{voluntario.apellidos}}</h2>
+			<img src="{{MEDIA_URL}}{{vol.foto}}" width="100px;"/><br>
+			
+			<table class="table table-striped">
+				<thead>
+					<tr><th>Informaci&oacute;n</th></tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>Fecha de Nacimiento</th>
+						<th>{{ voluntario.nacimiento }}</th>
+					</tr>
+					<tr>
+						<th>Sexo</th>
+						<th>{% if voluntario.sexo %} Masculino {% else %} Femenino {% endif %}</th>
+					</tr>
+					<tr>
+						<th>Escolaridad</th>
+						<th>{{ esc|access:voluntario.escolaridad }}</th>
+					</tr>
+					<tr>
+						<th>Titulo</th>
+						<th>{{ voluntario.titulo }}</th>
+					</tr>
+					<tr>
+						<th>Tel&eacute;fono</th>
+						<th>{{ voluntario.telefono }}</th>
+					</tr>
+					<tr>
+						<th>Direcci&oacute;n</th>
+						<th>{{ voluntario.direccion }}</th>
+					</tr>
+					<tr>
+						<th>Correo</th>
+						<th>{{ voluntario.correo }}</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="span4">
+			<h2>Relaci&oacute;n con el puesto</h2>
+			{% if status %}
+				{{ voluntario.nombres|pvs:status.status}}
+			{% else %}
+				<p>{{ voluntario.nombres }} no est&aacute; relacionado con el puesto.
+				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute; en el proyecto?</p>
+				<form action="." method="POST">{% csrf_token %}
+					{{ form.non_field_errors }}
+					<div>
+						{{ form.mensaje.errors }}
+						<label for="id_descripcion">Mensaje (<span style="color:red">*</span>)</label>
+						{{ form.mensaje }}
+					</div>
+					<div hidden=true>
+						{{ form.voluntario }}
+						{{ form.puesto }}
+						{{ form.status }}
+					</div>
+					<p><input type="submit" class="btn btn-primary" value="Solicitar Participaci&oacute;n" /></p>
+				</form>
+			{% endif %}
+		</div>
+	</div>
+	<input value="Regresar" onClick="location.href='../../buscar_voluntarios/'" type="button" class="btn btn-primary">
+</div>
+{% endblock %}

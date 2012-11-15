@@ -10,7 +10,7 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		{% if tipo == 'voluntario' or tipo == 'empresa' %}
-			<div class="span4">
+			<div class="span2">
 				{# TODO informaciom empresa/voluntario#}
 			</div>
 			<div class="span10">
@@ -34,11 +34,12 @@
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
 			</div>
+			<input value="Regresar" onClick="location.href='..'" type="button" class="btn btn-primary">
 		{% endif %}
 		
 		{% if tipo == 'puesto' %}
 			<div class="span2">
-			<h2>Proyecto</h2>
+				<h2>Proyecto</h2>
 				<p><b>Organizacion:</b></h4>
 				<p>{{ obj.proyecto.organizacion.nombre }}</p>
 				<p><b>Descripcion:</b></p>
@@ -61,7 +62,7 @@
 						<tbody>
 							{% for voluntario in lista %}
 							<tr>
-								<td><a href="../../../voluntario/{{voluntario.user.id}}">{{voluntario.nombres}}</a></td>
+								<td><a href="../voluntario/{{voluntario.user.id}}/">{{voluntario.nombres}}</a></td>
 								<td>{{voluntario.apellidos}}</td>
 							</tr>
 							{% endfor %}
@@ -83,7 +84,7 @@
 						<tbody>
 							{% for empresa in lista2 %}
 							<tr>
-								<td><a href="../../../empresa/{{empresa.user.id}}">{{empresa.nombre}}</a></td>
+								<td><a href="../../../empresa/{{empresa.user.id}}/">{{empresa.nombre}}</a></td>
 								<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
 							</tr>
 							{% endfor %}
@@ -93,6 +94,7 @@
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
 			</div>
+			<input value="Regresar" onClick="location.href='..'" type="button" class="btn btn-primary">
 		{% endif %}
 	</div>
 </div>

@@ -90,3 +90,7 @@ class FormularioEditarONG(forms.ModelForm):
 		model = Organizacion
 		exclude = ('es_empresa', 'expira', 'user')
 		widgets = { 'descripcion': forms.Textarea(attrs={'rows':4}), 'objetivos': forms.Textarea(attrs={'rows':4}) }
+
+class FormularioVoluntarioAplicando(forms.ModelForm):
+	class Meta:
+		model = VoluntariosAplicando
