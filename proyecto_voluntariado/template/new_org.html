@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% block panel %}
+<li class="active"><a href="/main/">Inicio</a></li>
+<li><a href="../contact/">Contacto</a></li>
+<li><a href="../about/">Acerca de</a></li>
+{% endblock %}
+
+{% block principal %}
+<form name="form1" class="well form-horizontal" method="POST" action="." enctype="multipart/form-data" > {% csrf_token %}
+	<h1>{{ title }}</h1>
+	
+	<legend>Por favor, complete los siguientes campos</legend>
+	
+	{% if error %}
+		<div class='alert alert-error'>
+			{{ error }}
+		</div>
+	{% endif %}
+		{% for i in form %}
+		<div class="control-group">
+			<label class="control-label">{{i.label}}</label> <div class="controls">{{ i }} <p class="help-block">{% autoescape off %}{{i.help_text }} {% endautoescape %}</p> {{i.errors}} </div>
+		</div>
+		{% endfor %}
+		
+		<br><br>
+		<div class="modal hide fade" id="nuevoInteres" tabindex = "-1" role="dialog" aria-labelledby="nuevoInteresLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Nuevo Interés</h3>
+			</div>
+			<div class="well form-horizontal">
+				{{ interes }}
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" name="nuevointeres" value="nuevointeres">Agregar</button>
+				<button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Guardar</button>
+		
+		
+		
+</form>	
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$('.errorlist').wrap('<div class="alert alert-error"></div>');
+	$('.alert.alert-error').prepend('<button type="button" class="close" data-dismiss="alert">x</button>');
+</script>
+{% endblock %}
+

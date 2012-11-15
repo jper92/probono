@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+{% block panel %}
+<li class="active"><a href="#">Inicio</a></li>
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buscar<b class="caret"></b>
+	</a>
+	<ul class="dropdown-menu">
+	<li><a href="/buscar/organizaciones" >Organizaciones</a></li>
+	<li><a href="/buscar/empresas" >Empresas</a></li>
+	</ul>
+</li>
+<li><a href="/contact/">Contacto</a></li>
+<li><a href="/about/">Acerca de</a></li>
+<li><p>{{vol.nombre}}</p></li>
+<li><a href="/logout/">Cerrar sesión</a></li>
+
+{% endblock %}
+
+{% block principal %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+      <img src="{{ MEDIA_URL }}{{ vol.foto }}" width="100px;" />
+      <h2>{{ vol.nombres }}, {{vol.apellidos}}</h2>
+      <a href="/editarvoluntario/">Editar perfil</a>
+      
+    </div>
+    <!--  Centralbar content  -->
+    <div class="span10">
+		<div class="hero-unit">
+			<h2>Tus proyectos actuales</h2>
+			<a>Encuentra proyectos</a>
+		</div>
+      <h2>Especialidades</h2>
+      <table class="table table-striped">
+		  <thead>
+			  <tr>
+				  <th>Especialidad</th>
+				  <th>Descripción</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			{% for i in vol.especialidades.all %}
+			<tr>
+				<td>{{ i.nombre }}</td>
+				<td>{{ i.descripcion }}</td>
+			</tr>
+			{% endfor %}
+		  </tbody>
+      </table>
+      <h2>Favoritos</h2>
+      <table class="table table-striped">
+		  <thead>
+			  <tr>
+				  <th>Favorito</th>
+				  <th>Descripción</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			{% for i in vol.favoritos.all %}
+			<tr>
+				<td>{{ i.nombre }}</td>
+				<td>{{ i.descripcion }}</td>
+			</tr>
+			{% endfor %}
+		  </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,10 @@
+
+AddHandler fcgid-script .fcgi  # For security reasons, Option followsymlinks cannot be overridden.
+#Options +FollowSymLinks
+Options +SymLinksIfOwnerMatch
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(media/.*)$ - [L]
+RewriteRule ^(adminmedia/.*)$ - [L]
+RewriteCond %{REQUEST_URI} !(dispatch.fcgi)
+RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]
