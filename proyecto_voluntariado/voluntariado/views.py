@@ -155,7 +155,24 @@ def puesto(request, id_puesto):
 	return render_to_response('puesto.html', {'puesto':puesto, 'esc':escolaridad}, context_instance=RequestContext(request))
 
 
-# Motor de búsquedas
+# Motor de búsquedas de puestos
+def busqueda_vol(request):
+	if request.user.is_authenticated():
+		vol = Voluntario.objects.get(user=request.user)
+		especialidades = vol.especialidades.all()
+		favoritos = vol.favoritos.all()
+		q = Q()
+		for f in favoritos:
+			q.add(Q(favoritos=f),Q.OR)
+		for e in especialidades:
+			q.add(Q(especialidades=e),Q.OR)
+		
+		lista = Puesto.objects.filter(q)
+		return render_to_response('match_search.html',{'tipo':'voluntario','obj':vol,'lista':lista}, context_instance=RequestContext(request))
+	else:
+		print 'por queeeee'
+		return redirect('/main/')
+
 def match_search(request, tipo, id_req):
 	lista=[]
 	lista2=[]
