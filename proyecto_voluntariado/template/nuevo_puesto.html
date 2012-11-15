@@ -1,84 +1,86 @@
 {% extends 'index.html' %}
 
 {% block scripts %}
-	<!--
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-	-->
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" />
     <script src="{{ MEDIA_URL }}js/jquery.min.js"></script>
     <script src="{{ MEDIA_URL }}js/jquery-ui.js"></script>
     
+    <style>
+		#leftcolumn  { width: 15%; float: left;  height: 46px }
+		#rightcolumn { width: 85%; float: right; height: 46px }
+	</style>
+	
     <script>
-    $(function() {
-        $( "#id_fecha_limite" ).datepicker({
-            minDate: +1,
-            maxDate: '+2y',
-            dateFormat: 'dd/mm/yy',
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            changeYear: true,
-            changeMonth: true
-        });
-    });
+		$(function() {
+			$( "#id_fecha_limite" ).datepicker({
+				minDate: +1,
+				maxDate: '+2y',
+				dateFormat: 'dd/mm/yy',
+				showOtherMonths: true,
+				selectOtherMonths: true,
+				changeYear: true,
+				changeMonth: true
+			});
+		});
     </script>
 {% endblock %}
 
 {% block principal %}
 	<div class="hero-unit">
-		<h1>Nuevo Puesto</h1>
-		<br>
+		<h2>Ingreso de nuevo puesto</h2><br>
+		
+		<p><b>Informaci&oacute;n requerida para el nuevo puesto</b></p>
+		<span style="color:red">*</span> <span>campos obligatorios</span><br><br>
+		
 		<form action="." method="POST">{% csrf_token %}
 			{{ form.non_field_errors }}
-			<div class="fieldWrapper" hidden=True>
+			<div hidden=True>
 				{{ form.proyecto.errors }}
-				<label for="id_proyecto">proyecto:</label>
 				{{ form.proyecto }}
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.descripcion.errors }}
-				<label for="id_descripcion">Descripcion:</label>
-				{{ form.descripcion }}
+				<div id="leftcolumn"><label for="id_descripcion">Descripci&oacute;n (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.descripcion }}</div>
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.costo.errors }}
-				<label for="id_costo">Costo:</label>
-				{{ form.costo }}
+				<div id="leftcolumn"><label for="id_costo">Costo (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.costo }}</div>
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.escolaridad.errors }}
-				<label for="id_escolaridad">Escolaridad:</label>
-				{{ form.escolaridad }}
+				<div id="leftcolumn"><label for="id_escolaridad">Escolaridad (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.escolaridad }}</div>
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.entregables.errors }}
-				<label for="id_entregables">Entregables:</label>
-				{{ form.entregables }}
+				<div id="leftcolumn"><label for="id_entregables">Entregables (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.entregables }}</div>
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.forma_trabajo.errors }}
-				<label for="id_forma_trabajo">Forma de trabajo:</label>
-				{{ form.forma_trabajo }}
+				<div id="leftcolumn"><label for="id_forma_trabajo">Forma de trabajo (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.forma_trabajo }}</div>
 			</div>
-			
-			<div class="fieldWrapper">
+			<div>
 				{{ form.fecha_limite.errors }}
-				<label for="id_fecha_limite">Fecha l&iacute;mite:</label>
-				{{ form.fecha_limite }}
+				<div id="leftcolumn"><label for="id_fecha_limite">Fecha l&iacute;mite (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.fecha_limite }}</div>
 			</div>
-			
 			<div>
 				{{ form.especialidades.errors }}
-				<label for="id_especialidades">Especialidades:</label>
+				<label for="id_especialidades">Especialidades (<span style="color:red">*</span>)</label>
 				{{ form.especialidades }}
 			</div>
 			<div>
 				{{ form.favoritos.errors }}
-				<label for="id_favoritos">Favoritos:</label>
+				<label for="id_favoritos">Favoritos (<span style="color:red">*</span>)</label>
 				{{ form.favoritos }}
 			</div>
-			<p><input type="submit" value="Guardar" /></p>
+			
+			<p><input type="button" class="btn btn-secondary" value="Cancelar" onClick="location.href='..'">
+			<input type="submit" class="btn btn-primary" value="Guardar" /></p>
 		</form>
 	</div>
 {% endblock %}

@@ -10,6 +10,9 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		{% if tipo == 'voluntario' or tipo == 'empresa' %}
+			<div class="span4">
+				{# TODO informaciom empresa/voluntario#}
+			</div>
 			<div class="span10">
 				<h1>Empleos recomendados:</h1>
 				{% if lista %}
@@ -22,7 +25,7 @@
 						<tbody>
 							{% for empleo in lista %}
 							<tr>
-								<td>{{empleo.descripcion}}</td>
+								<td><a href="../../../puesto/{{empleo.id}}">{{empleo.descripcion}}</a></td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -34,8 +37,19 @@
 		{% endif %}
 		
 		{% if tipo == 'puesto' %}
+			<div class="span2">
+			<h2>Proyecto</h2>
+				<p><b>Organizacion:</b></h4>
+				<p>{{ obj.proyecto.organizacion.nombre }}</p>
+				<p><b>Descripcion:</b></p>
+				<p>{{ obj.proyecto.descripcion }}</p>
+				<p><b>Objetivos:</b></p>
+				<p>{{ obj.proyecto.objetivos }}</p>
+			</div>
 			<div class="span10">
-				<h1>Voluntarios recomendados:</h1>
+				<h1>Busquedas para puesto <u>{{obj.descripcion}}</u></h1>
+				<br>
+				<h2>Voluntarios recomendados:</h2>
 				{% if lista %}
 					<table class="table table-striped">
 						<thead>
@@ -47,7 +61,7 @@
 						<tbody>
 							{% for voluntario in lista %}
 							<tr>
-								<td>{{voluntario.nombres}}</td>
+								<td><a href="../../../voluntario/{{voluntario.user.id}}">{{voluntario.nombres}}</a></td>
 								<td>{{voluntario.apellidos}}</td>
 							</tr>
 							{% endfor %}
@@ -57,7 +71,7 @@
 					<p>No se obtuvo ningun resultado.</p>
 				{% endif %}
 		
-				<h1>Empresas recomendadas:</h1>
+				<h2>Empresas recomendadas:</h2>
 				{% if lista2 %}
 					<table class="table table-striped">
 						<thead>
@@ -69,7 +83,7 @@
 						<tbody>
 							{% for empresa in lista2 %}
 							<tr>
-								<td>{{empresa.nombre}}</td>
+								<td><a href="../../../empresa/{{empresa.user.id}}">{{empresa.nombre}}</a></td>
 								<td>{{empresa.nombre_representante}} {{empresa.apellido_representante}}</td>
 							</tr>
 							{% endfor %}
