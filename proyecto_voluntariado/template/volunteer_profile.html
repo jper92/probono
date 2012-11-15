@@ -44,6 +44,26 @@
 			{% endfor %}
 		  </tbody>
       </table>
+      
+      <h2>Puestos actuales</h2>
+      <table class="table table-striped">
+		  <thead>
+			  <tr>
+				  <th>Organizacion</th>
+				  <th>Proyecto</th>
+				  <th>Puesto</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			  {% for i in vol.puestos.all %}
+			  <tr>
+				  <td>{{ i.proyecto.organizacion.nombre }}</td>
+				  <td>{{ i.proyecto.descripcion}}</td>
+				  <td>{{ i.descripcion }}</td>
+			  </tr>
+			  {% endfor %}
+		  </tbody>
+      </table>
     </div>
   </div>
 </div>

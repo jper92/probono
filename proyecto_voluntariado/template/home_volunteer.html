@@ -31,6 +31,24 @@
     <div class="span10">
 		<div class="hero-unit">
 			<h2>Tus proyectos actuales</h2>
+		  <table class="table table-striped">
+			  <thead>
+				  <tr>
+					  <th>Organizacion</th>
+					  <th>Proyecto</th>
+					  <th>Puesto</th>
+				  </tr>
+			  </thead>
+			  <tbody>
+				  {% for i in vol.puestos.all %}
+				  <tr>
+					  <td>{{ i.proyecto.organizacion.nombre }}</td>
+					  <td>{{ i.proyecto.descripcion}}</td>
+					  <td>{{ i.descripcion }}</td>
+				  </tr>
+				  {% endfor %}
+			  </tbody>
+		  </table>
 			<a>Encuentra proyectos</a>
 		</div>
       <h2>Especialidades</h2>
