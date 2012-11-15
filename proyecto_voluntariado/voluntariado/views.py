@@ -141,17 +141,17 @@ def match_search(request, tipo, id_req):
 	lista=[]
 	lista2=[]
 	id_req = int(id_req)
-	volemp = None
+	obj = None
 	q = Q()
 
 	if tipo=='voluntario':
-		volemp = Voluntario.objects.get(user=id_req)
+		obj = Voluntario.objects.get(user=id_req)
 	elif tipo=='empresa':
-		volemp = Organizacion.objects.get(user=id_req)
+		obj = Organizacion.objects.get(user=id_req)
 	
 	if tipo=='voluntario' or tipo=='empresa':
-		especialidades = volemp.especialidades.all()
-		favoritos = volemp.favoritos.all()
+		especialidades = obj.especialidades.all()
+		favoritos = obj.favoritos.all()
 		for f in favoritos:
 			q.add(Q(favoritos=f),Q.OR)
 		for e in especialidades:
@@ -160,8 +160,9 @@ def match_search(request, tipo, id_req):
 		lista = Puesto.objects.filter(q)
 
 	elif tipo=='puesto':
-		especialidades = Puesto.objects.get(id=id_req).especialidades.all()
-		favoritos = Puesto.objects.get(id=id_req).favoritos.all()
+		obj = Puesto.objects.get(id=id_req)
+		especialidades = obj.especialidades.all()
+		favoritos = obj.favoritos.all()
 		
 		for e in especialidades:
 			q.add(Q(especialidades=e),Q.OR)
@@ -169,10 +170,11 @@ def match_search(request, tipo, id_req):
 			q.add(Q(favoritos=f),Q.OR)
 		
 		lista = Voluntario.objects.filter(q)
-		lista2 = Organizacion.objects.filter(Q(es_empresa=True), q)
-		print lista
-		print lista2
-	return render_to_response('match_search.html',{'tipo':tipo,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
+		q.add(Q(es_empresa=True),Q.AND)
+		lista2 = Organizacion.objects.filter(q)
+		#print lista
+		#print lista2
+	return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
 
 #  
 #  name: new_interest

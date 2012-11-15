@@ -1,28 +1,39 @@
 {% extends 'index.html' %}
 
+{% block scripts %}
+	<style>
+		#leftcolumn  { width: 15%; float: left;  height:46px}
+		#rightcolumn { width: 85%; float: right; height:46px}
+	</style>
+{% endblock %}
+
 {% block principal %}
 	<div class="hero-unit">
-		<h1>Nuevo proyecto</h1>
-		<br>
-		<p>Informaci&oacute;n del Proyecto</p>
+		<h2>Ingreso de nuevo proyecto</h2><br>
+		
+		<p><b>Informaci&oacute;n requerida para el nuevo proyecto</b></p>
+		<span style="color:red">*</span> <span>campos obligatorios</span><br><br>
+		
 		<form action="." method="POST">{% csrf_token %}
 			{{ form.non_field_errors }}
-			<div class="fieldWrapper">
+			<div>
 				{{ form.descripcion.errors }}
-				<label for="id_descripcion">Descripcion:</label>
-				{{ form.descripcion }}
+				<div id="leftcolumn"><label for="id_descripcion">Descripci&oacute;n (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.descripcion }}</div>
 			</div>
-			<div class="fieldWrapper">
+			<div>
 				{{ form.objetivos.errors }}
-				<label for="id_message">Objetivos:</label>
-				{{ form.objetivos }}
+				<div id="leftcolumn"><label for="id_message">Objetivos (<span style="color:red">*</span>)</label></div>
+				<div id="rightcolumn">{{ form.objetivos }}</div>
 			</div>
-			<div class="fieldWrapper" hidden=True>
+			<div hidden=True>
 				{{ form.organizacion.errors }}
-				<label for="id_message">organizacion:</label>
 				{{ form.organizacion }}
 			</div>
-			<p><input type="submit" value="Guardar" /></p>
+			
+			<p><input type="button" class="btn btn-secondary" value="Cancelar" onClick="location.href='..'">
+			<input type="submit" class="btn btn-primary" value="Guardar" /></p>
+			
 		</form>
 	</div>
 {% endblock %}

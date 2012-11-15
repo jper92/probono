@@ -49,10 +49,11 @@
 		</div>
 		<div class="span4">
 			<h1>Acciones</h1>
+			<input value="Buscar voluntarios" onClick="location.href='buscar_voluntarios'" type="button" class="btn btn-primary">
 			{# TODO #}
 			
 		</div>
 	</div>
-	<a href="../../proyecto/{{puesto.proyecto.id}}">Regresar</a>
+	<input value="Regresar" onClick="location.href='../../proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}
