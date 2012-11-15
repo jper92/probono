@@ -133,28 +133,36 @@ def nuevo_proyecto(request):
 
 # Perfil del proyecto
 def proyecto(request, id_proy):
-	proyecto = Proyecto.objects.get(id=id_proy)
-	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
-	return render_to_response('proyecto.html', {'proyecto':proyecto, 'esc':escolaridad}, context_instance=RequestContext(request))
+	if request.user.is_authenticated():
+		proyecto = Proyecto.objects.get(id=id_proy)
+		escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+		return render_to_response('proyecto.html', {'proyecto':proyecto, 'esc':escolaridad}, context_instance=RequestContext(request))
+	else:
+		return redirect('/main/')
 
 
 # Ingreso de Puesto
 def nuevo_puesto(request, id_proy):
-	if request.method == 'POST':
-		form = FormularioPuesto(request.POST)
-		if form.is_valid():
-			puesto = form.save()
-			return HttpResponseRedirect('../../../puesto/'+str(puesto.id))
+	if request.user.is_authenticated():
+		if request.method == 'POST':
+			form = FormularioPuesto(request.POST)
+			if form.is_valid():
+				puesto = form.save()
+				return HttpResponseRedirect('../../../puesto/'+str(puesto.id))
+		else:
+			form = FormularioPuesto(initial={'proyecto':id_proy})
+		return render_to_response('nuevo_puesto.html', {'form':form}, context_instance=RequestContext(request))
 	else:
-		form = FormularioPuesto(initial={'proyecto':id_proy})
-	return render_to_response('nuevo_puesto.html', {'form':form}, context_instance=RequestContext(request))
-
+		return redirect('/main/')
 
 # Perfil de puesto
 def puesto(request, id_puesto):
-	puesto = Puesto.objects.get(id=id_puesto)
-	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
-	return render_to_response('puesto.html', {'puesto':puesto, 'esc':escolaridad}, context_instance=RequestContext(request))
+	if request.user.is_authenticated():
+		puesto = Puesto.objects.get(id=id_puesto)
+		escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+		return render_to_response('puesto.html', {'puesto':puesto, 'esc':escolaridad}, context_instance=RequestContext(request))
+	else:
+		return redirect('/main/')
 
 
 # Motor de búsquedas de puestos
@@ -175,85 +183,92 @@ def busqueda_vol(request):
 		return redirect('/main/')
 
 def match_search(request, tipo, id_req):
-	lista=[]
-	lista2=[]
-	id_req = int(id_req)
-	obj = None
-	q = Q()
+	if request.user.is_authenticated():
+		lista=[]
+		lista2=[]
+		id_req = int(id_req)
+		obj = None
+		q = Q()
 
-	if tipo=='voluntario':
-		obj = Voluntario.objects.get(user=id_req)
-	elif tipo=='empresa':
-		obj = Organizacion.objects.get(user=id_req)
-	
-	if tipo=='voluntario' or tipo=='empresa':
-		especialidades = obj.especialidades.all()
-		favoritos = obj.favoritos.all()
-		for f in favoritos:
-			q.add(Q(favoritos=f),Q.OR)
-		for e in especialidades:
-			q.add(Q(especialidades=e),Q.OR)
+		if tipo=='voluntario':
+			obj = Voluntario.objects.get(user=id_req)
+		elif tipo=='empresa':
+			obj = Organizacion.objects.get(user=id_req)
 		
-		lista = Puesto.objects.filter(q)
+		if tipo=='voluntario' or tipo=='empresa':
+			especialidades = obj.especialidades.all()
+			favoritos = obj.favoritos.all()
+			for f in favoritos:
+				q.add(Q(favoritos=f),Q.OR)
+			for e in especialidades:
+				q.add(Q(especialidades=e),Q.OR)
+			
+			lista = Puesto.objects.filter(q)
 
-	elif tipo=='puesto':
-		obj = Puesto.objects.get(id=id_req)
-		especialidades = obj.especialidades.all()
-		favoritos = obj.favoritos.all()
-		
-		for e in especialidades:
-			q.add(Q(especialidades=e),Q.OR)
-		for f in favoritos:
-			q.add(Q(favoritos=f),Q.OR)
-		
-		lista = Voluntario.objects.filter(q)
-		q.add(Q(es_empresa=True),Q.AND)
-		lista2 = Organizacion.objects.filter(q)
-		
-	return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
-
+		elif tipo=='puesto':
+			obj = Puesto.objects.get(id=id_req)
+			especialidades = obj.especialidades.all()
+			favoritos = obj.favoritos.all()
+			
+			for e in especialidades:
+				q.add(Q(especialidades=e),Q.OR)
+			for f in favoritos:
+				q.add(Q(favoritos=f),Q.OR)
+			
+			lista = Voluntario.objects.filter(q)
+			q.add(Q(es_empresa=True),Q.AND)
+			lista2 = Organizacion.objects.filter(q)
+			
+		return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
+	else:
+		return redirect('/main/')
 
 # vista de voluntario desde puesto
 def puesto_voluntario2(request, id_puesto, id_vol):
-	pue = Puesto.objects.get(id=id_puesto)
-	vol = Voluntario.objects.get(user=id_vol)
-	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
-	try:
-		volap = VoluntariosAplicando.objects.get(puesto=pue, voluntario=vol)
-	except:
-		volap = None
-	if volap:
-		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'status':volap}, context_instance=RequestContext(request))
-	else:
-		if request.method == 'POST':
-			form = FormularioVoluntarioAplicando(request.POST)
-			if form.is_valid():
-				puesto = form.save()
-				return HttpResponseRedirect('')
+	if request.user.is_authenticated():
+		pue = Puesto.objects.get(id=id_puesto)
+		vol = Voluntario.objects.get(user=id_vol)
+		escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+		try:
+			volap = VoluntariosAplicando.objects.get(puesto=pue, voluntario=vol)
+		except:
+			volap = None
+		if volap:
+			return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'status':volap}, context_instance=RequestContext(request))
 		else:
-			form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
-		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
-
+			if request.method == 'POST':
+				form = FormularioVoluntarioAplicando(request.POST)
+				if form.is_valid():
+					puesto = form.save()
+					return HttpResponseRedirect('')
+			else:
+				form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
+			return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
+	else:
+		return redirect('/main/')
 
 # Vista de empresa desde puesto
 def puesto_empresa(request, id_puesto, id_vol):
-	pue = Puesto.objects.get(id=id_puesto)
-	emp = Organizacion.objects.get(user=id_vol)
-	try:
-		empap = EmpresasAplicando.objects.get(puesto=pue, empresa=emp)
-	except:
-		empap = None
-	if empap:
-		return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'status':empap}, context_instance=RequestContext(request))
-	else:
-		if request.method == 'POST':
-			form = FormularioEmpresaAplicando(request.POST)
-			if form.is_valid():
-				puesto = form.save()
-				return HttpResponseRedirect('')
+	if request.user.is_authenticated():
+		pue = Puesto.objects.get(id=id_puesto)
+		emp = Organizacion.objects.get(user=id_vol)
+		try:
+			empap = EmpresasAplicando.objects.get(puesto=pue, empresa=emp)
+		except:
+			empap = None
+		if empap:
+			return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'status':empap}, context_instance=RequestContext(request))
 		else:
-			form = FormularioEmpresaAplicando(initial={'empresa':emp.correo, 'puesto':pue.id, 'status':1})
-		return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'form':form}, context_instance=RequestContext(request))
+			if request.method == 'POST':
+				form = FormularioEmpresaAplicando(request.POST)
+				if form.is_valid():
+					puesto = form.save()
+					return HttpResponseRedirect('')
+			else:
+				form = FormularioEmpresaAplicando(initial={'empresa':emp.correo, 'puesto':pue.id, 'status':1})
+			return render_to_response('puesto_empresa.html', {'puesto':pue, 'empresa':emp, 'form':form}, context_instance=RequestContext(request))
+	else:
+		return redirect('/main/')
 
 
 # Vista principal del proyecto, controla a dónde se redirige según el tipo de usuario.
