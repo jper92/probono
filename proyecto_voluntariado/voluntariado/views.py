@@ -195,7 +195,7 @@ def match_search(request, tipo, id_req):
 	return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
 
 # vista de voluntario desde puesto
-def puesto_voluntario(request, id_puesto, id_vol):
+def puesto_voluntario2(request, id_puesto, id_vol):
 	pue = Puesto.objects.get(id=id_puesto)
 	vol = Voluntario.objects.get(user=id_vol)
 	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}

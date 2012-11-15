@@ -24,7 +24,7 @@ urlpatterns = patterns('voluntariado.views',
 	url(r'^editarong/$','edit_ong'),
 	
 	# agregar voluntario desde puesto
-	url(r'^puesto/(\d+)/voluntario/(\d+)/$', 'puesto_voluntario'),
+	url(r'^puesto/(\d+)/voluntario/(\d+)/$', 'puesto_voluntario2'),
 
 	#caso de uso: voluntario/empresa quiere agregar/ver un empleo
 	url(r'^mispuestos/(\d+)/$', 'puesto_voluntario'),
