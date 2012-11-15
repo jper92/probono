@@ -1,78 +1,78 @@
 {% extends 'index.html' %}
 {% load dictionary_extras %}
 
+
 {% block principal %}
 <div class="container-fluid">
-	
-	<div class="row-fluid">
-		<div class="span2">
-			<h2>Proyecto</h2>
-			<p><b>Organizacion:</b></h4>
-			<p>{{ puesto.proyecto.organizacion.nombre }}</p>
-			<p><b>Descripcion:</b></p>
-			<p>{{ puesto.proyecto.descripcion }}</p>
-			<p><b>Objetivos:</b></p>
-			<p>{{ puesto.proyecto.objetivos }}</p>
-		</div>
-	
-		<div class="span6">
-			<h1>Informacion</h1>
-			<table class="table table-striped">
-				<tbody>
-					<tr>
-						<th>Descripcion:</th>
-						<th>{{ puesto.descripcion }}</th>
-					</tr>
-					<tr>
-						<th>Costo:</th>
-						<th>{{ puesto.costo }}</th>
-					</tr>
-					<tr>
-						<th>Escolaridad</th>
-						<th>{{ puesto.escolaridad }}</th>
-					</tr>
-					<tr>
-						<th>Entregables</th>
-						<th>{{ puesto.entregables }}</th>
-					</tr>
-					<tr>
-						<th>Forma de Trabajo</th>
-						<th>{{ puesto.forma_trabajo }}</th>
-					</tr>
-					<tr>
-						<th>Fecha L&iacute;mite</th>
-						<th>{{ puesto.fecha_limite }}</th>
-					</tr>
-				</tbody>
-			</table>
-			
-		</div>
-		<div class="span4">
-			<h1>Acciones</h1>
-			{% if not relacionado %}
-			<a href="#agregar" class="btn" role="button" data-toggle="modal">Agregar este puesto</a>
-			
-			<div class="modal hide fade" id="agregar" tabindex = "-1" role="dialog" aria-labelledby="agregarLabel" aria-hidden="true">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="myModalLabel">Agregar puesto</h3>
-				</div>
-				<form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
-					<div class="modal-body">
-						<legend>Agrega un mensaje</legend>
-						<textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje">Mensaje</textarea>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Enviar</button>
-						<button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
-					</div>
-				</form>
-			</div>
-			{% endif %}
-			
-		</div>
-	</div>
-	<input value="Regresar" onClick="location.href='../../proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
+        
+        <div class="row-fluid">
+                <div class="span2">
+                        <h2>Proyecto</h2>
+                        <p><b>Organizacion:</b></h4>
+                        <p>{{ puesto.proyecto.organizacion.nombre }}</p>
+                        <p><b>Descripcion:</b></p>
+                        <p>{{ puesto.proyecto.descripcion }}</p>
+                        <p><b>Objetivos:</b></p>
+                        <p>{{ puesto.proyecto.objetivos }}</p>
+                </div>
+        
+                <div class="span6">
+                        <h1>Informacion</h1>
+                        <table class="table table-striped">
+                                <tbody>
+                                        <tr>
+                                                <th>Descripcion:</th>
+                                                <th>{{ puesto.descripcion }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Costo:</th>
+                                                <th>{{ puesto.costo }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Escolaridad</th>
+                                                <th>{{ puesto.escolaridad }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Entregables</th>
+                                                <th>{{ puesto.entregables }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Forma de Trabajo</th>
+                                                <th>{{ puesto.forma_trabajo }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Fecha L&iacute;mite</th>
+                                                <th>{{ puesto.fecha_limite }}</th>
+                                        </tr>
+                                </tbody>
+                        </table>
+                        
+                </div>
+                <div class="span4">
+                        <h1>Acciones</h1>
+                        {% if not relacionado %}
+                        <a href="#agregar" class="btn" role="button" data-toggle="modal">Agregar este puesto</a>
+                        
+                        <div class="modal hide fade" id="agregar" tabindex = "-1" role="dialog" aria-labelledby="agregarLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="myModalLabel">Agregar puesto</h3>
+                                </div>
+                                <form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
+                                        <div class="modal-body">
+                                                <legend>Agrega un mensaje</legend>
+                                                <textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje">Mensaje</textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                                <button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                </form>
+                        </div>
+                        {% endif %}
+                        
+                </div>
+        </div>
+        <input value="Regresar" onClick="location.href='../../proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}
-

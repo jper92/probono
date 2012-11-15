@@ -123,8 +123,8 @@ def proyecto(request, id_proy):
 def nuevo_puesto(request, id_proy):
 	if request.method == 'POST':
 		form = FormularioPuesto(request.POST)
-		print request.POST
-		print form
+		#print request.POST
+		#print form
 		if form.is_valid():
 			puesto = form.save()
 			return HttpResponseRedirect('../../../puesto/'+str(puesto.id))
@@ -194,7 +194,27 @@ def match_search(request, tipo, id_req):
 		#print lista2
 	return render_to_response('match_search.html',{'tipo':tipo,'obj':obj,'lista':lista,'lista2':lista2}, context_instance=RequestContext(request))
 
-
+# vista de voluntario desde puesto
+def puesto_voluntario2(request, id_puesto, id_vol):
+	pue = Puesto.objects.get(id=id_puesto)
+	vol = Voluntario.objects.get(user=id_vol)
+	escolaridad = {'p':'Primaria','b':'Básicos','d':'Diversificado','u':'Universitario','m':'Maestría/Doctorado','n':'Ninguna'}
+	try:
+		volap = VoluntariosAplicando.objects.get(puesto=pue, voluntario=vol)
+	except:
+		volap = None
+	if volap:
+		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'status':volap}, context_instance=RequestContext(request))
+	else:
+		if request.method == 'POST':
+			form = FormularioVoluntarioAplicando(request.POST)
+			if form.is_valid():
+				puesto = form.save()
+				return HttpResponseRedirect('')
+		else:
+			form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
+		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
+	
 # Vista principal del proyecto, controla a dónde se redirige según el tipo de usuario.
 def main_view(request):
 	if request.method == 'POST':

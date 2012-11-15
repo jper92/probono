@@ -7,7 +7,7 @@
 	<div class="row-fluid">
 		<div class="span2">
 			<h2>Proyecto</h2>
-			<p><b>Organizacion:</b></h4>
+			<p><b>Organizaci&oacute;n:</b></h4>
 			<p>{{ puesto.proyecto.organizacion.nombre }}</p>
 			<p><b>Descripcion:</b></p>
 			<p>{{ puesto.proyecto.descripcion }}</p>
@@ -18,13 +18,14 @@
 		<div class="span6">
 			<h1>Informacion</h1>
 			<table class="table table-striped">
+				<thead></thead>
 				<tbody>
 					<tr>
-						<th>Descripcion:</th>
+						<th>Descripci&oacute;n</th>
 						<th>{{ puesto.descripcion }}</th>
 					</tr>
 					<tr>
-						<th>Costo:</th>
+						<th>Costo</th>
 						<th>{{ puesto.costo }}</th>
 					</tr>
 					<tr>
@@ -54,6 +55,6 @@
 			
 		</div>
 	</div>
-	<input value="Regresar" onClick="location.href='../../proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
+	<input value="Regresar" onClick="location.href='/proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}

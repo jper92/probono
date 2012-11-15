@@ -28,7 +28,7 @@
 				<tbody>
 					{% for puesto in proyecto.puesto_set.all %}
 						<tr>
-							<td><a href="../../puesto/{{puesto.id}}">{{ puesto.descripcion }}</a></td>
+							<td><a href="/puesto/{{puesto.id}}">{{ puesto.descripcion }}</a></td>
 							<td>{{ esc|access:puesto.escolaridad }}</td>
 							<td>{{ puesto.costo }}</td>
 						</tr>
@@ -38,6 +38,6 @@
 			<input value="Agregar puesto" onClick="location.href='nuevopuesto'" type="button" class="btn btn-primary">
 		</div>
 	</div>
-	<input value="Regresar" onClick="location.href='../../ong/{{proyecto.organizacion.user.id}}'" type="button" class="btn btn-primary">
+	<input value="Regresar" onClick="location.href='/ong/{{proyecto.organizacion.user.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}
