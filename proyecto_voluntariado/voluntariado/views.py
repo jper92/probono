@@ -410,4 +410,5 @@ def puesto_voluntario(request, puesto):
 		# No está autenticado
 		return redirect('/main/')
 
-
+def voluntario_ong(request):
+	pass
