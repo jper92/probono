@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response,redirect
 from django.template import *
 from django.db.models import Q
 
-from models import Organizacion, Voluntario
+from models import Organizacion, Voluntario, VoluntariosAplicando
 from forms import *
 
 from django.contrib.auth.models import User
@@ -204,7 +204,7 @@ def puesto_voluntario(request, id_puesto, id_vol):
 	except:
 		volap = None
 	if volap:
-		return render_to_response('puesto_voluntario.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'status':volap}, context_instance=RequestContext(request))
+		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'status':volap}, context_instance=RequestContext(request))
 	else:
 		if request.method == 'POST':
 			form = FormularioVoluntarioAplicando(request.POST)
@@ -213,7 +213,7 @@ def puesto_voluntario(request, id_puesto, id_vol):
 				return HttpResponseRedirect('')
 		else:
 			form = FormularioVoluntarioAplicando(initial={'voluntario':vol.correo, 'puesto':pue.id, 'status':1})
-		return render_to_response('puesto_voluntario.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
+		return render_to_response('puesto_voluntario2.html', {'puesto':pue, 'voluntario':vol, 'esc':escolaridad, 'form':form}, context_instance=RequestContext(request))
 	
 # Vista principal del proyecto, controla a dónde se redirige según el tipo de usuario.
 def main_view(request):
@@ -281,7 +281,7 @@ def home_empresa(request):
 		try:
 			ong = Organizacion.objects.get(user=request.user)
 			if ong.es_empresa:
-				return render_to_response('home_ong.html',{'ong': ong,}, context_instance=RequestContext(request))
+				return render_to_response('home_empresa.html',{'ong': ong,}, context_instance=RequestContext(request))
 			else:
 				return redirect('/main/')
 			#return render_to_response('main.html',{'current': None if vol==None else datetime.datetime.now().year - vol.nacimiento.year, 'vol': vol, 'user':request.user,}, context_instance=RequestContext(request))
@@ -339,3 +339,77 @@ def edit_ong(request):
 			return redirect('/main/')
 	else:
 		return redirect('/main')
+
+# Voluntario quiere buscar/consultar un puesto dado ya sea para observarlo o pedir aceptación
+def puesto_voluntario(request, puesto):
+	# válido si el puesto no está asociado y si el consultante es empresa/voluntario
+	if request.method=='POST':
+		if request.user.is_authenticated():
+			try:
+				p = Puesto.objects.get(pk=int(puesto))
+			except:
+				return redirect('/main/')
+			try:
+				vol = Voluntario.objects.get(user=request.user)
+				asoc = VoluntariosAplicando(voluntario=vol, puesto=p,status=0,mensaje=request.POST['mensaje'])
+				try:
+					asoc.save()
+					# Guardado exitosamente
+					return render_to_response('/main/')
+				except:
+					# Hubo un error
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
+			except:
+				try:
+					e = Empresa.objects.get(user=request.user)
+					asoc = EmpresasAplicando(empresa = e, puesto=p,status = 0, mensaje=request.POST['mensaje'])
+					try:
+						asoc.save()
+						#Guardado
+						return render_to_response('/main/')
+					except:
+						return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
+				except:
+					logout(request)
+					return redirect('/main/')
+					
+		else:
+			# No está autenticado
+			return redirect('/main/')
+	# GET. Consulta de puesto.
+	if request.user.is_authenticated():
+		try:
+			p = Puesto.objects.get(pk=int(puesto))
+		except:
+			return redirect('/main/')
+		try:
+			vol = Voluntario.objects.get(user=request.user)
+			print 'aqui llego'
+			print 'salio de puesto'
+			try:
+				VoluntariosAplicando.objects.get(voluntario=vol, puesto=p)
+				# Esta relacionado puesto y voluntario
+				return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True}, context_instance=RequestContext(request))
+			except:
+				# No está relacionado
+				return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': False}, context_instance=RequestContext(request))
+		except:
+			try:
+				emp = Organizacion.objects.get(user=request.user)
+				try:
+					e = EmpresasAplicando.objects.get(empresa=e, puesto = p)
+					# Esta relacionado
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True}, context_instance=RequestContext(request))
+				except:
+					#No está relacionado
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': False}, context_instance=RequestContext(request))
+			except:
+				logout(request)
+				return redirect('/main/')
+	else:
+		# No está autenticado
+		return redirect('/main/')
+
+
+def voluntario_ong(request):
+	pass

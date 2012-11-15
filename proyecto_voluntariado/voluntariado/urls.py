@@ -22,5 +22,12 @@ urlpatterns = patterns('voluntariado.views',
 	url(r'^logout/$','logout_view'),
 	url(r'^editarvoluntario/$','edit_volunteer'),
 	url(r'^editarong/$','edit_ong'),
+	
+	# agregar voluntario desde puesto
 	url(r'^puesto/(\d+)/voluntario/(\d+)/$', 'puesto_voluntario'),
+
+	#caso de uso: voluntario/empresa quiere agregar/ver un empleo
+	url(r'^mispuestos/(\d+)/$', 'puesto_voluntario'),
+	#caso de uso: ong quiere agregar/ver a voluntario para puesto
+	url(r'^misvoluntarios/(\d+)/$', 'voluntario_ong'),
 )

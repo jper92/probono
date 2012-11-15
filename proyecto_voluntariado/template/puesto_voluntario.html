@@ -1,84 +1,78 @@
 {% extends 'index.html' %}
 {% load dictionary_extras %}
 
+
 {% block principal %}
 <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span2">
-			<h2>Proyecto</h2>
-			<p><b>Organizacion:</b></h4>
-			<p>{{ puesto.proyecto.organizacion.nombre }}</p>
-			<p><b>Descripcion:</b></p>
-			<p>{{ puesto.proyecto.descripcion }}</p>
-			<p><b>Objetivos:</b></p>
-			<p>{{ puesto.proyecto.objetivos }}</p>
-		</div>
-		<div class="span6">
-			<h1>Busquedas para puesto <u>{{obj.descripcion}}</u></h1><br>
-			
-			<h2>Voluntario: {{ voluntario.nombres }} {{voluntario.apellidos}}</h2>
-			<img src="{{MEDIA_URL}}{{vol.foto}}" width="100px;"/><br>
-			
-			<table class="table table-striped">
-				<thead>
-					<tr><th>Informaci&oacute;n</th></tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>Fecha de Nacimiento</th>
-						<th>{{ voluntario.nacimiento }}</th>
-					</tr>
-					<tr>
-						<th>Sexo</th>
-						<th>{% if voluntario.sexo %} Masculino {% else %} Femenino {% endif %}</th>
-					</tr>
-					<tr>
-						<th>Escolaridad</th>
-						<th>{{ esc|access:voluntario.escolaridad }}</th>
-					</tr>
-					<tr>
-						<th>Titulo</th>
-						<th>{{ voluntario.titulo }}</th>
-					</tr>
-					<tr>
-						<th>Tel&eacute;fono</th>
-						<th>{{ voluntario.telefono }}</th>
-					</tr>
-					<tr>
-						<th>Direcci&oacute;n</th>
-						<th>{{ voluntario.direccion }}</th>
-					</tr>
-					<tr>
-						<th>Correo</th>
-						<th>{{ voluntario.correo }}</th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="span4">
-			<h2>Relaci&oacute;n con el puesto</h2>
-			{% if status %}
-				{{ voluntario.nombres|pvs:status.status}}
-			{% else %}
-				<p>{{ voluntario.nombres }} no est&aacute; relacionado con el puesto.
-				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute; en el proyecto?</p>
-				<form action="." method="POST">{% csrf_token %}
-					{{ form.non_field_errors }}
-					<div>
-						{{ form.mensaje.errors }}
-						<label for="id_descripcion">Mensaje (<span style="color:red">*</span>)</label>
-						{{ form.mensaje }}
-					</div>
-					<div hidden=true>
-						{{ form.voluntario }}
-						{{ form.puesto }}
-						{{ form.status }}
-					</div>
-					<p><input type="submit" class="btn btn-primary" value="Solicitar Participaci&oacute;n" /></p>
-				</form>
-			{% endif %}
-		</div>
-	</div>
-	<input value="Regresar" onClick="location.href='../../buscar_voluntarios/'" type="button" class="btn btn-primary">
+        
+        <div class="row-fluid">
+                <div class="span2">
+                        <h2>Proyecto</h2>
+                        <p><b>Organizacion:</b></h4>
+                        <p>{{ puesto.proyecto.organizacion.nombre }}</p>
+                        <p><b>Descripcion:</b></p>
+                        <p>{{ puesto.proyecto.descripcion }}</p>
+                        <p><b>Objetivos:</b></p>
+                        <p>{{ puesto.proyecto.objetivos }}</p>
+                </div>
+        
+                <div class="span6">
+                        <h1>Informacion</h1>
+                        <table class="table table-striped">
+                                <tbody>
+                                        <tr>
+                                                <th>Descripcion:</th>
+                                                <th>{{ puesto.descripcion }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Costo:</th>
+                                                <th>{{ puesto.costo }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Escolaridad</th>
+                                                <th>{{ puesto.escolaridad }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Entregables</th>
+                                                <th>{{ puesto.entregables }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Forma de Trabajo</th>
+                                                <th>{{ puesto.forma_trabajo }}</th>
+                                        </tr>
+                                        <tr>
+                                                <th>Fecha L&iacute;mite</th>
+                                                <th>{{ puesto.fecha_limite }}</th>
+                                        </tr>
+                                </tbody>
+                        </table>
+                        
+                </div>
+                <div class="span4">
+                        <h1>Acciones</h1>
+                        {% if not relacionado %}
+                        <a href="#agregar" class="btn" role="button" data-toggle="modal">Agregar este puesto</a>
+                        
+                        <div class="modal hide fade" id="agregar" tabindex = "-1" role="dialog" aria-labelledby="agregarLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="myModalLabel">Agregar puesto</h3>
+                                </div>
+                                <form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
+                                        <div class="modal-body">
+                                                <legend>Agrega un mensaje</legend>
+                                                <textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje">Mensaje</textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                                <button data-dismiss="modal" class="btn" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                </form>
+                        </div>
+                        {% endif %}
+                        
+                </div>
+        </div>
+        <input value="Regresar" onClick="location.href='../../proyecto/{{puesto.proyecto.id}}'" type="button" class="btn btn-primary">
 </div>
 {% endblock %}
