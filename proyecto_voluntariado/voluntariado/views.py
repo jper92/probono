@@ -124,7 +124,7 @@ def nuevo_proyecto(request):
 			#print form
 			if form.is_valid():
 				proyecto = form.save(commit = True)
-				return HttpResponseRedirect('/home/ong/'+str(proyecto.id))
+				return HttpResponseRedirect('/home/ong/')
 		else:
 			form = FormularioProyecto(initial={'organizacion':ong.correo})
 		return render_to_response('nuevo_proyecto.html', {'form':form}, context_instance=RequestContext(request))
