@@ -38,7 +38,7 @@ def ingreso_organizacion(request, es_ong):
 		if 'nuevointeres' in request.POST:
 			form = FormInteres(request.POST)
 			try:
-				interes = Intereses(nombre= form.data['nombre_i'], descripcion = form.data['descripcion_i'], es_favorito= form.data['es_favorito'])
+				interes = Intereses(nombre= form.data['nombre_i'], descripcion = form.data['descripcion_i'], es_favorito= True if form.data['es_favorito']=="True" else False)
 				interes.save()
 				return render_to_response('new_org.html', {'form': FormularioONG(request.POST), 'interes': FormInteres(), 'title':'Nueva ONG' if es_ong else 'Nueva empresa'}, context_instance=RequestContext(request))
 			except:
@@ -80,7 +80,7 @@ def ingreso_voluntario(request):
 		if 'nuevointeres' in request.POST:
 			form = FormInteres(request.POST)
 			try:
-				interes = Intereses(nombre=form.data['nombre_i'], descripcion=form.data['descripcion_i'], es_favorito = form.data['es_favorito'])
+				interes = Intereses(nombre=form.data['nombre_i'], descripcion=form.data['descripcion_i'], es_favorito = True if request.POST['es_favorito']=="True" else False)
 				interes.save()
 				return render_to_response('new_volunteer.html', {'form': FormularioVoluntario(request.POST),'interes': FormInteres(), 'title':'Nuevo Voluntario'}, context_instance=RequestContext(request))
 			except:
