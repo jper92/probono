@@ -11,12 +11,12 @@ def access(value, arg):
 @register.filter(name='pvs')
 def pvs(voluntario, value):
 	if value == 0:
-		return voluntario+' está esparando su aprobación para participar en el proyecto.'
+		return '%s está esperando su aprobación para participar en el proyecto.' % (str(voluntario))
 	elif value == 1:
-		return 'Esperando a que '+voluntario+' acepte trabajar en este proyecto.'
+		return 'Esperando a que %s acepte trabajar en este proyecto.' % (str(voluntario))
 	elif value == 2:
-		return voluntario+' está actualmente trabajando en el proyecto.'
+		return '%s está actualmente trabajando en el proyecto.' % (str(voluntario))
 	elif value == 3:
-		return voluntario+' ha finalizado satisfactoriamente su trabajo.'
+		return '%s ha finalizado satisfactoriamente su trabajo.' % (str(voluntario))
 	elif value == 4:
-		return voluntario+' ha finalizado insatisfactoriamente su trabajo.'
+		return '%s ha finalizado insatisfactoriamente su trabajo.' % (str(voluntario))

@@ -66,7 +66,7 @@
 		<div class="span4">
 			<h2>Relaci&oacute;n con el puesto</h2>
 			{% if status %}
-				{{ voluntario.nombres|pvs:status.status}}
+				<p>{{ voluntario.nombres|pvs:status.status}}</p>
 			{% else %}
 				<p>{{ voluntario.nombres }} no est&aacute; relacionado con el puesto.
 				¿Desea solicitar a {{ voluntario.nombres }} su participaci&oacute;n en el proyecto?</p>
