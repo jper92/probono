@@ -92,6 +92,8 @@ class EmpresasAplicando(models.Model):
 	puesto = models.ForeignKey(Puesto)
 	status = models.IntegerField()
 	mensaje = models.CharField(max_length=300, null=True)
+	class Meta:
+		unique_together = ('empresa','puesto')
 	
 
 class VoluntariosAplicando(models.Model):
@@ -99,4 +101,6 @@ class VoluntariosAplicando(models.Model):
 	puesto = models.ForeignKey(Puesto)
 	status = models.IntegerField()
 	mensaje = models.CharField(max_length=300, null=True)
+	class Meta:
+		unique_together = ('voluntario','puesto')
 	

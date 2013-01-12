@@ -15,20 +15,20 @@
         <div class="row-fluid">
                 <div class="span2">
                         <h2>Proyecto</h2>
-                        <p><b>Organizacion:</b></h4>
+                        <p><b>Organización:</b></h4>
                         <p>{{ puesto.proyecto.organizacion.nombre }}</p>
-                        <p><b>Descripcion:</b></p>
+                        <p><b>Descripción:</b></p>
                         <p>{{ puesto.proyecto.descripcion }}</p>
                         <p><b>Objetivos:</b></p>
                         <p>{{ puesto.proyecto.objetivos }}</p>
                 </div>
         
                 <div class="span6">
-                        <h1>Informacion</h1>
+                        <h1>Información</h1>
                         <table class="table table-striped">
                                 <tbody>
                                         <tr>
-                                                <th>Descripcion:</th>
+                                                <th>Descripción:</th>
                                                 <th>{{ puesto.descripcion }}</th>
                                         </tr>
                                         <tr>
@@ -68,7 +68,7 @@
                                 <form class="well form-horizontal" method="POST" action="."> {% csrf_token %}
                                         <div class="modal-body">
                                                 <legend>Agrega un mensaje</legend>
-                                                <textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje">Mensaje</textarea>
+                                                <textarea name="mensaje" rows="4" cols="10" placeholder="Mensaje"></textarea>
                                         </div>
                                         <div class="modal-footer">
                                                 <button type="submit" class="btn btn-primary">Enviar</button>
@@ -76,8 +76,10 @@
                                         </div>
                                 </form>
                         </div>
-                        {% endif %}
                         
+                        {% else %}
+                        <p><b>Su estado es:<br> <i>{{ status }}</i></b></p>
+                        {% endif %}
                 </div>
         </div>
 </div>

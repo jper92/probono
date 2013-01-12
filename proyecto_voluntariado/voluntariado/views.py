@@ -405,6 +405,7 @@ def edit_ong(request):
 	else:
 		return redirect('/main')
 
+STATUS_PUESTOS = {0: 'Pendiente de aprobación', 1: 'Activo', 2: 'Completado satisfactoriamente', 3: 'Incompleto/ Completado no satisfactoriamente'}
 
 # Voluntario quiere buscar/consultar un puesto dado ya sea para observarlo o pedir aceptación
 def puesto_voluntario(request, puesto):
@@ -424,7 +425,7 @@ def puesto_voluntario(request, puesto):
 					return render_to_response('/main/')
 				except:
 					# Hubo un error
-					return render_to_response('puesto_voluntario.html',{'puesto': p, 'vol':vol, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'vol':vol, 'relacionado': True, 'error': True, 'status': STATUS_PUESTOS[e.status]}, context_instance=RequestContext(request))
 			except:
 				try:
 					e = Empresa.objects.get(user=request.user)
@@ -436,7 +437,6 @@ def puesto_voluntario(request, puesto):
 					except:
 						return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'error': True}, context_instance=RequestContext(request))
 				except:
-					logout(request)
 					return redirect('/main/')
 					
 		else:
@@ -450,12 +450,10 @@ def puesto_voluntario(request, puesto):
 			return redirect('/main/')
 		try:
 			vol = Voluntario.objects.get(user=request.user)
-			print 'aqui llego'
-			print 'salio de puesto'
 			try:
-				VoluntariosAplicando.objects.get(voluntario=vol, puesto=p)
+				e = VoluntariosAplicando.objects.get(voluntario=vol, puesto=p)
 				# Esta relacionado puesto y voluntario
-				return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True}, context_instance=RequestContext(request))
+				return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'status': STATUS_PUESTOS[e.status]}, context_instance=RequestContext(request))
 			except:
 				# No está relacionado
 				return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': False}, context_instance=RequestContext(request))
@@ -465,7 +463,7 @@ def puesto_voluntario(request, puesto):
 				try:
 					e = EmpresasAplicando.objects.get(empresa=e, puesto = p)
 					# Esta relacionado
-					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True}, context_instance=RequestContext(request))
+					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': True, 'status': STATUS_PUESTOS[e.status]}, context_instance=RequestContext(request))
 				except:
 					#No está relacionado
 					return render_to_response('puesto_voluntario.html',{'puesto': p, 'relacionado': False}, context_instance=RequestContext(request))
